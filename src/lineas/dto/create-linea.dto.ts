@@ -1,24 +1,12 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Type } from 'class-transformer';
 
-export class CreateUserDto {
+export class CreateLineaDto {
     
     @IsString()
     @IsNotEmpty()
-    username:string;
-
-    @IsString()
-    @IsNotEmpty()
-    email:string;
-
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(8)
-    password:string;
-
-    @IsString()
-    rol:string;
-
+    descripcion:string;
+   
     @IsOptional()
     @Type(() => Date)
     created_at?: Date;

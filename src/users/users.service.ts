@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,7 +16,18 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    return await this.usersRepository.save(createUserDto);
+    const  userFound = await this.usersRepository.findOne({
+      where:{
+        username:createUserDto.username 
+      }
+    })
+    if(userFound){
+      return new HttpException('Usuario ya Existe',HttpStatus.CONFLICT)
+    }
+
+    const newUser = this.usersRepository.create(createUserDto)
+    return this.usersRepository.save(newUser)
+
   }
 
   async findAll() {
@@ -24,14 +35,41 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    return await this.usersRepository.findOneBy({id});
+    const userFound =await this.usersRepository.findOne({
+      where:{
+        id,
+      },
+    })
+    if (!userFound){
+      return new HttpException('Usuario no Existe', HttpStatus.NOT_FOUND)
+    }
+    return userFound;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.usersRepository.update(id,updateUserDto) ;
+    const userFound = await this.usersRepository.findOne({
+      where:{
+        id
+      }
+    })
+
+    if(!userFound){
+      return new HttpException('Usuario no Existe',HttpStatus.NOT_FOUND)
+    }
+    const updateUser = Object.assign(userFound,updateUserDto);
+    return this.usersRepository.save(updateUser) ;
   }
 
   async remove(id: number) {
-    return await this.usersRepository.softDelete({id});
-  }
+     const result = await this.usersRepository.softDelete({id})
+
+      if (result.affected === 0){
+        return new HttpException('Usuario no Existe',HttpStatus.NOT_FOUND )
+      }
+      return result
+
+    }
+
+
+
 }

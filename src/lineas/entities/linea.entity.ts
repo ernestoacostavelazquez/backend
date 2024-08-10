@@ -1,22 +1,13 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
-export class User {
+export class Linea {
 
     @PrimaryGeneratedColumn()
     id:number;
 
     @Column()
-    username:string;
-
-    @Column({unique:true,nullable:false})
-    email:string;
-
-    @Column({nullable:false})
-    password:string;
-
-    @Column({default:'user'})
-    rol:string;
+    descripcion:string;
 
     @CreateDateColumn()
     created_at: Date;
