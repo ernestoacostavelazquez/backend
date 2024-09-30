@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum, IsOptional, IsString, IsDate } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsOptional, IsString, IsDate, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreatePolizasContableDto {
@@ -38,4 +38,9 @@ export class CreatePolizasContableDto {
   @IsOptional()
   @IsString()
   updated_by?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  id_tipo_poliza:number;
+
 }

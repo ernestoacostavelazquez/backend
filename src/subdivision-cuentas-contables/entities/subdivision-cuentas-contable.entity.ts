@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import {TiposCuentasContables} from 'src/tipos-cuentas-contables/entities/tipos-cuentas-contable.entity'
+import { CuentasContable } from 'src/cuentas-contables/entities/cuentas-contable.entity';
 
 @Entity()
 export class SubdivisionCuentasContable {
@@ -8,7 +9,7 @@ export class SubdivisionCuentasContable {
   id_subdivision: number;
 
   @Column({type:'int'})
-  codigoSubdivision: number;
+  codigo_subdivision: number;
 
   @Column({type:'varchar',length:100})
   nombre_subdivision: string;
@@ -29,8 +30,16 @@ export class SubdivisionCuentasContable {
   deletedAt: Date;
 
   
-  @ManyToOne(() => TiposCuentasContables, tiposcuentascontables => tiposcuentascontables.subdivisioncuentascontable)
-  @JoinColumn({ name: 'IdTipoCuenta' })
-  IdTipoCuenta:TiposCuentasContables
+  @ManyToOne(() => TiposCuentasContables, tiposcuentascontables => tiposcuentascontables.id_subdivision)
+  @JoinColumn({ name: 'id_tipo_cuenta' })
+  id_tipo_cuenta:TiposCuentasContables
+
+  // Relación uno a muchos con CuentasContable
+  @OneToMany(() => CuentasContable, (cuenta) => cuenta.subdivision)
+  @JoinColumn({ name: 'id_cuenta' })
+  id_cuenta: CuentasContable[];
   
+
+  
+
 }

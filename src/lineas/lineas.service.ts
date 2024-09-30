@@ -33,10 +33,10 @@ export class LineasService {
     return await this.lineasRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id_linea: number) {
     const lineaFound = await this.lineasRepository.findOne({
       where:{
-        id,
+        id_linea,
       }
     })
     if (!lineaFound){
@@ -45,10 +45,10 @@ export class LineasService {
     return lineaFound;
   }
 
-  async update(id: number, updateLineaDto: UpdateLineaDto) {
+  async update(id_linea: number, updateLineaDto: UpdateLineaDto) {
     const lineaFound = await this.lineasRepository.findOne({
       where:{
-        id
+        id_linea
       }
     })
 
@@ -59,8 +59,8 @@ export class LineasService {
     return this.lineasRepository.save(updateLinea);
   }
 
-  async remove(id: number) {
-    const result = await this.lineasRepository.softDelete({id})
+  async remove(id_linea: number) {
+    const result = await this.lineasRepository.softDelete({id_linea})
 
     if(result.affected === 0){
       return new HttpException('Linea no Existe', HttpStatus.NOT_FOUND)

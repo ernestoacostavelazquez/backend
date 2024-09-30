@@ -34,10 +34,10 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id_user: number) {
     const userFound =await this.usersRepository.findOne({
       where:{
-        id,
+        id_user,
       },
     })
     if (!userFound){
@@ -46,10 +46,10 @@ export class UsersService {
     return userFound;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id_user: number, updateUserDto: UpdateUserDto) {
     const userFound = await this.usersRepository.findOne({
       where:{
-        id
+        id_user
       }
     })
 
@@ -60,8 +60,8 @@ export class UsersService {
     return this.usersRepository.save(updateUser) ;
   }
 
-  async remove(id: number) {
-     const result = await this.usersRepository.softDelete({id})
+  async remove(id_user: number) {
+     const result = await this.usersRepository.softDelete({id_user})
 
       if (result.affected === 0){
         return new HttpException('Usuario no Existe',HttpStatus.NOT_FOUND )

@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SaldosPeriodosService } from './saldos-periodos.service';
 import { CreateSaldosPeriodoDto } from './dto/create-saldos-periodo.dto';
 import { UpdateSaldosPeriodoDto } from './dto/update-saldos-periodo.dto';
+import { ApiTags} from '@nestjs/swagger';
 
-@Controller('saldos-periodos')
+@ApiTags('SaldosPeriodos')
+@Controller('SaldosPeriodos')
 export class SaldosPeriodosController {
   constructor(private readonly saldosPeriodosService: SaldosPeriodosService) {}
 

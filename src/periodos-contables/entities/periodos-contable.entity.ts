@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
+import { SaldosPeriodo } from 'src/saldos-periodos/entities/saldos-periodo.entity';
+import { FoliosPolizasPeriodo } from 'src/folios-polizas-periodo/entities/folios-polizas-periodo.entity';
 
 @Entity('periodos_contables')
 export class PeriodosContable {
@@ -32,4 +34,11 @@ export class PeriodosContable {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @OneToMany(() => SaldosPeriodo, (saldosPeriodo) => saldosPeriodo.periodo_contable)
+    saldos: SaldosPeriodo[];
+
+    // Relación uno a muchos con FoliosPolizasPeriodo
+    @OneToMany(() => FoliosPolizasPeriodo, (foliosPolizasPeriodo) => foliosPolizasPeriodo.periodo_contable)
+    folios: FoliosPolizasPeriodo[];
+    
 }

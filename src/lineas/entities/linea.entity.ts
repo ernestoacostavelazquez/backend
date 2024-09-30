@@ -4,7 +4,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedCol
 export class Linea {
 
     @PrimaryGeneratedColumn()
-    id:number;
+    id_linea:number;
 
     @Column()
     descripcion:string;

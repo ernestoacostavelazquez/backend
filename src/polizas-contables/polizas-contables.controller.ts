@@ -8,7 +8,6 @@ import { ApiTags} from '@nestjs/swagger';
 @Controller('PolizasContables')
 export class PolizasContablesController {
   constructor(private readonly polizasContablesService: PolizasContablesService) {}
-
   @Post()
   create(@Body() createPolizasContableDto: CreatePolizasContableDto) {
     return this.polizasContablesService.create(createPolizasContableDto);

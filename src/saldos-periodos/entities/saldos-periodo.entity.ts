@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { PeriodosContable } from 'src/periodos-contables/entities/periodos-contable.entity';
+import { CuentasContable } from 'src/cuentas-contables/entities/cuentas-contable.entity';
 
 @Entity('saldos_periodo')
 export class SaldosPeriodo {
@@ -32,6 +34,14 @@ export class SaldosPeriodo {
     @DeleteDateColumn()
     deletedAt: Date;
 
+     // Relación muchos a uno con PeriodosContable
+     @ManyToOne(() => PeriodosContable, (periodosContable) => periodosContable.saldos)
+     @JoinColumn({ name: 'id_periodo' })
+     periodo_contable: PeriodosContable;
 
+     // Relación muchos a uno con CuentasContable
+    @ManyToOne(() => CuentasContable, (cuenta_contable) => cuenta_contable.saldos)
+    @JoinColumn({ name: 'id_cuenta' })  // Usa id_cuenta para la relación
+    cuenta_contable: CuentasContable;
 
 }

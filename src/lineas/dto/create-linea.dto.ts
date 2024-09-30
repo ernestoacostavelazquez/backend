@@ -22,4 +22,6 @@ export class CreateLineaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    
 }

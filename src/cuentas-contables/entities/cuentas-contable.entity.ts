@@ -1,11 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { DetallesPoliza } from 'src/detalles-polizas/entities/detalles-poliza.entity';
+import { SaldosPeriodo } from 'src/saldos-periodos/entities/saldos-periodo.entity';
+import { SubdivisionCuentasContable } from 'src/subdivision-cuentas-contables/entities/subdivision-cuentas-contable.entity';
 
 @Entity('cuentas_contables')
 export class CuentasContable {
   @PrimaryGeneratedColumn()
   id_cuenta: number;
 
-  @Column({ type: 'char', length: 4 })
+  @Column({ type: 'char', length: 25 })
   codigo_cuenta: string;
 
   @Column({ type: 'varchar', length: 100 })
@@ -31,4 +34,17 @@ export class CuentasContable {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  // Relación uno a muchos con DetallesPoliza
+  @OneToMany(() => DetallesPoliza, (detallesPoliza) => detallesPoliza.cuenta_contable)
+  detalles: DetallesPoliza[];
+
+  // Relación uno a muchos con SaldosPeriodo
+  @OneToMany(() => SaldosPeriodo, (saldosPeriodo) => saldosPeriodo.cuenta_contable)
+  saldos: SaldosPeriodo[];
+
+  // Relación muchos a uno con SubdivisionCuentasContable
+  @ManyToOne(() => SubdivisionCuentasContable, (subdivision) => subdivision.id_cuenta)
+  @JoinColumn({ name: 'id_subdivision' })  // Clave foránea
+  subdivision: SubdivisionCuentasContable;
 }

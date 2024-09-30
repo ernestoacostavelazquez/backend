@@ -28,4 +28,9 @@ export class CreateSubdivisionCuentasContableDto {
     @IsString()
     updated_by?: string;
 
+    @IsNumber()
+    @IsNotEmpty()
+    id_tipo_cuenta:number;
+    
+
 }

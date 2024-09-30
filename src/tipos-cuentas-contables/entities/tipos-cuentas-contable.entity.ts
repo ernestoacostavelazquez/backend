@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import {SubdivisionCuentasContable} from 'src/subdivision-cuentas-contables/entities/subdivision-cuentas-contable.entity'
 
 
@@ -28,8 +28,11 @@ export class TiposCuentasContables {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() =>  SubdivisionCuentasContable, subdivisioncuentascontable => subdivisioncuentascontable.IdTipoCuenta)
-  subdivisioncuentascontable: SubdivisionCuentasContable[]
-  
+  @OneToMany(() =>  SubdivisionCuentasContable, subdivisioncuentascontable => subdivisioncuentascontable.id_tipo_cuenta)
+  @JoinColumn({ name: 'id_subdivision' })
+   id_subdivision : SubdivisionCuentasContable[]
+
+  // id_subdivision : SubdivisionCuentasContable[]
+
 
 }

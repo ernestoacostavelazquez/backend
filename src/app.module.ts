@@ -12,6 +12,24 @@ import { CuentasContablesModule } from './cuentas-contables/cuentas-contables.mo
 import { PolizasContablesModule } from './polizas-contables/polizas-contables.module';
 import { DetallesPolizasModule } from './detalles-polizas/detalles-polizas.module';
 import { SaldosPeriodosModule } from './saldos-periodos/saldos-periodos.module';
+import { FoliosPolizasPeriodoModule } from './folios-polizas-periodo/folios-polizas-periodo.module';
+import { MaestroPartesModule } from './maestro_partes/maestro_partes.module';
+import { UnidadMedidaModule } from './unidad_medida/unidad_medida.module';
+import { CategoriasModule } from './categorias/categorias.module';
+import { PartesAlmacenModule } from './partes_almacen/partes_almacen.module';
+import { AlmacenesModule } from './almacenes/almacenes.module';
+import { UbicacionesAlmacenModule } from './ubicaciones_almacen/ubicaciones_almacen.module';
+import { GenerosModule } from './generos/generos.module';
+import { TiposPersonaModule } from './tipos_persona/tipos_persona.module';
+import { RolesModule } from './roles/roles.module';
+import { EstadosCivilModule } from './estados_civil/estados_civil.module';
+import { TiposDomiciliosModule } from './tipos_domicilios/tipos_domicilios.module';
+import { RolesPersonaModule } from './roles_persona/roles_persona.module';
+import { DomiciliosPersonaModule } from './domicilios_persona/domicilios_persona.module';
+import { CodigosPostalesModule } from './codigos_postales/codigos_postales.module';
+import { MaestroPersonasModule } from './maestro_personas/maestro_personas.module';
+import { PersonasFisicasModule } from './personas_fisicas/personas_fisicas.module';
+import { PersonasMoralesModule } from './personas_morales/personas_morales.module';
 
 @Module({
   imports: [
@@ -35,6 +53,24 @@ import { SaldosPeriodosModule } from './saldos-periodos/saldos-periodos.module';
     PolizasContablesModule,
     DetallesPolizasModule,
     SaldosPeriodosModule,
+    FoliosPolizasPeriodoModule,
+    MaestroPartesModule,
+    UnidadMedidaModule,
+    CategoriasModule,
+    PartesAlmacenModule,
+    AlmacenesModule,
+    UbicacionesAlmacenModule,
+    GenerosModule,
+    TiposPersonaModule,
+    RolesModule,
+    EstadosCivilModule,
+    TiposDomiciliosModule,
+    DomiciliosPersonaModule,
+    RolesPersonaModule,
+    CodigosPostalesModule,
+    MaestroPersonasModule,
+    PersonasFisicasModule,
+    PersonasMoralesModule,
     ],
   controllers: [AppController],
   providers: [AppService],

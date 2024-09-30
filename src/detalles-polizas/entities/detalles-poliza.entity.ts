@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { PolizasContable } from 'src/polizas-contables/entities/polizas-contable.entity';
+import { CuentasContable } from 'src/cuentas-contables/entities/cuentas-contable.entity';
 
 @Entity('detalles_poliza')
 export class DetallesPoliza {
@@ -34,5 +36,15 @@ export class DetallesPoliza {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  // Relación muchos a uno con PolizasContable
+  @ManyToOne(() => PolizasContable, (poliza_contable) => poliza_contable.detalles)
+  @JoinColumn({ name: 'id_poliza' })
+  poliza_contable: PolizasContable;
+
+  // Relación muchos a uno con CuentasContable
+  @ManyToOne(() => CuentasContable, (cuenta_contable) => cuenta_contable.detalles)
+  @JoinColumn({ name: 'id_cuenta' }) // Usa id_cuenta para la relación
+  cuenta_contable: CuentasContable;
 
 }
