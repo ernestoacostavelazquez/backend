@@ -29,25 +29,15 @@ export class TiposCuentasContablesService {
 
   async findAll() {
     return await this.tiposcuentascontablesRepository.find({
-      relations:['id_subdivision'], // Incluir la relación en las consultas
+      relations:['subdivisiones'], // Incluir la relación en las consultas
     });   
   }
-
-  /*
-  async findOne(id_tipo_cuenta: number) {
-    return await this.tiposcuentascontablesRepository.findOne({
-      where:{id_tipo_cuenta},
-      relations: ['id_subdivision'], // Cargar la relación con subdivision de cuentas
-     } );
-  }
-*/
-
 
 async findOne(id_tipo_cuenta: number) {
 
   const tiposCuentaFound = await this.tiposcuentascontablesRepository.findOne({
     where:{id_tipo_cuenta},
-      relations: ['id_subdivision'], // Cargar la relación con subdivision de cuentas
+      relations: ['subdivisiones'], // Cargar la relación con subdivision de cuentas
   })
   if(!tiposCuentaFound){
     return new HttpException('Tipo de Cuenta no Existe',HttpStatus.NOT_FOUND)

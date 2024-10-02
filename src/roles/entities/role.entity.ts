@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, JoinColumn } from 'typeorm';
+import { RolesPersona } from 'src/roles_persona/entities/roles_persona.entity';
 
 @Entity('roles')
 export class Rol {
@@ -22,4 +23,8 @@ export class Rol {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => RolesPersona, rolPersona => rolPersona.rol)
+    roles_persona: RolesPersona[];
+   
 }

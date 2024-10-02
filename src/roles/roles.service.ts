@@ -44,10 +44,13 @@ export class RolesService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.rolesRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el rol existe antes de eliminar
+    const rol = await this.rolesRepository.findOne({ where: { id_rol: id } });
+    if (!rol) {
       throw new NotFoundException(`Rol con ID ${id} no encontrado`);
     }
+
+    await this.rolesRepository.softDelete(id);
   }
  
 }

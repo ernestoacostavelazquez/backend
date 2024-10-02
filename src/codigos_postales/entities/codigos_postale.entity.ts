@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, JoinColumn } from 'typeorm';
+import { DomiciliosPersona } from 'src/domicilios_persona/entities/domicilios_persona.entity';
 
 @Entity('codigos_postales')
 export class CodigosPostal {
@@ -31,5 +32,8 @@ export class CodigosPostal {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => DomiciliosPersona, domicilio => domicilio.codigo_postal)
+    domicilios: DomiciliosPersona[];
 
 }

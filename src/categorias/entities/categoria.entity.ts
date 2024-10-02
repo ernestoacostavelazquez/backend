@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { MaestroParte } from 'src/maestro_partes/entities/maestro_parte.entity';
 
 @Entity('categorias')
 export class Categoria {
@@ -23,6 +24,8 @@ export class Categoria {
   @Column({ nullable: true })
   updated_by: string;
 
+  @OneToMany(() => MaestroParte, parte => parte.categoria)
+  maestro_partes: MaestroParte[];
   
 
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsOptional, IsString, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCuentasContableDto {
@@ -33,4 +33,8 @@ export class CreateCuentasContableDto {
   @IsOptional()
   @IsString()
   updated_by?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  id_subdivision:number;
 }

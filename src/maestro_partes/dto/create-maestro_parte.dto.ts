@@ -54,4 +54,12 @@ export class CreateMaestroParteDto {
     @IsString()
     updated_by?: string;
 
+    @IsNumber()
+    @IsNotEmpty()
+    id_unidad:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_categoria:number;
+
 }

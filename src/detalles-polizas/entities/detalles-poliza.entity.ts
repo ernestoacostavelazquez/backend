@@ -37,14 +37,14 @@ export class DetallesPoliza {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  // Relación muchos a uno con PolizasContable
-  @ManyToOne(() => PolizasContable, (poliza_contable) => poliza_contable.detalles)
+  // Relaciones
+  @ManyToOne(() => PolizasContable, polizaContable => polizaContable.detalles)
   @JoinColumn({ name: 'id_poliza' })
   poliza_contable: PolizasContable;
 
-  // Relación muchos a uno con CuentasContable
-  @ManyToOne(() => CuentasContable, (cuenta_contable) => cuenta_contable.detalles)
-  @JoinColumn({ name: 'id_cuenta' }) // Usa id_cuenta para la relación
+  @ManyToOne(() => CuentasContable, cuentaContable => cuentaContable.detalles)
+  @JoinColumn({ name: 'id_cuenta' })
   cuenta_contable: CuentasContable;
+
 
 }

@@ -10,13 +10,12 @@ export class FoliosPolizasPeriodo {
     @Column({ type: 'int', nullable: false })
     ultimo_folio: number;
 
-    // Relación muchos a uno con TiposPoliza
-    @ManyToOne(() => TiposPoliza, (tiposPoliza) => tiposPoliza.folios)
-    @JoinColumn({ name: 'id_tipo_poliza' }) // Clave foránea
-    tipo_poliza: TiposPoliza;
+     // Relaciones
+     @ManyToOne(() => TiposPoliza, (tipoPoliza) => tipoPoliza.folios)
+     tipo_poliza: TiposPoliza;
+ 
+     @ManyToOne(() => PeriodosContable, (periodo) => periodo.folios)
+     periodo_contable: PeriodosContable;
 
-    // Relación muchos a uno con PeriodosContable
-    @ManyToOne(() => PeriodosContable, (periodoContable) => periodoContable.folios)
-    @JoinColumn({ name: 'id_periodo' }) // Clave foránea
-    periodo_contable: PeriodosContable;
+    
 }

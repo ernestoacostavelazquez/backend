@@ -11,64 +11,100 @@ export class SubdivisionCuentasContablesService {
 
   constructor(
     @InjectRepository(SubdivisionCuentasContable)
-    private subdivisioncuentascontablesRepository:Repository<SubdivisionCuentasContable>,
+    private subdivisionCuentasRepository: Repository<SubdivisionCuentasContable>,
 
     @InjectRepository(TiposCuentasContables)
-    private readonly tiposCuentasContablesRepository: Repository<TiposCuentasContables>  // Repositorio para TiposCuentasContables
-    
-  ){}
+    private tiposCuentasContablesRepository: Repository<TiposCuentasContables>  // Repositorio para TiposCuentasContables
+  ) {}
 
+  // Función para crear una nueva subdivisión
   async create(createSubdivisionCuentasContableDto: CreateSubdivisionCuentasContableDto) {
+    const { id_tipo_cuenta, ...rest } = createSubdivisionCuentasContableDto;
 
-    const subdivisionCuentasFound = await this.subdivisioncuentascontablesRepository.findOne({
-      where:{
-        nombre_subdivision:createSubdivisionCuentasContableDto.nombre_subdivision
-      }
-    })
-    if(subdivisionCuentasFound){
-      return new HttpException('Subdivision ya Existe',HttpStatus.CONFLICT)
-    }
-
-    // Obtener el tipo de cuenta
+    // Verificar si el tipo de cuenta existe
     const tipoCuenta = await this.tiposCuentasContablesRepository.findOne({
-      where: { id_tipo_cuenta: createSubdivisionCuentasContableDto.id_tipo_cuenta },
+      where: { id_tipo_cuenta },
     });
 
     if (!tipoCuenta) {
       throw new HttpException('Tipo de cuenta no encontrado', HttpStatus.NOT_FOUND);
     }
 
-     // Crear la nueva subdivisión y asignar el tipo de cuenta
-      const newSubdivisionCuenta =  await this.subdivisioncuentascontablesRepository.create({
-      ...createSubdivisionCuentasContableDto,
-      id_tipo_cuenta: tipoCuenta,  // Asignar el objeto tipo de cuenta a la subdivisión
-     });
+    // Crear la nueva subdivisión y asociarla con el tipo de cuenta
+    const newSubdivision = this.subdivisionCuentasRepository.create({
+      ...rest,
+      tipo_cuenta: tipoCuenta,  // Relación con tipo de cuenta
+    });
 
-     return this.subdivisioncuentascontablesRepository.save(newSubdivisionCuenta);
-    
+    return await this.subdivisionCuentasRepository.save(newSubdivision);
   }
 
+  // Función para encontrar todas las subdivisiones
   async findAll() {
-    return await this.subdivisioncuentascontablesRepository.find({
-      relations:['id_tipo_cuenta'], // Incluir la relación en las consultas
+    return await this.subdivisionCuentasRepository.find({
+      relations: ['tipo_cuenta'], // Incluir la relación con tipo_cuenta en las consultas
     });
   }
 
+  // Función para encontrar una subdivisión por su ID
   async findOne(id_subdivision: number) {
-    return await this.subdivisioncuentascontablesRepository.findOne({
-      where:{id_subdivision},
-      relations: ['id_tipo_cuenta'], // Cargar la relación con TiposCuentasContables
+    const subdivision = await this.subdivisionCuentasRepository.findOne({
+      where: { id_subdivision },
+      relations: ['tipo_cuenta'], // Cargar la relación con tipo_cuenta
     });
+
+    // Validar si la subdivisión no existe
+    if (!subdivision) {
+      throw new HttpException('Subdivisión no encontrada', HttpStatus.NOT_FOUND);
+    }
+
+    return subdivision;
   }
 
+  // Función para actualizar una subdivisión
   async update(id_subdivision: number, updateSubdivisionCuentasContableDto: UpdateSubdivisionCuentasContableDto) {
- //   return await this.subdivisioncuentascontablesRepository.update({id_subdivision},updateSubdivisionCuentasContableDto);
-    return await '';
- 
+    const { id_tipo_cuenta, ...rest } = updateSubdivisionCuentasContableDto;
+
+    // Buscar la subdivisión existente
+    const subdivision = await this.subdivisionCuentasRepository.findOne({
+      where: { id_subdivision },
+      relations: ['tipo_cuenta'],  // Incluir la relación actual
+    });
+
+    if (!subdivision) {
+      throw new HttpException('Subdivisión no encontrada', HttpStatus.NOT_FOUND);
+    }
+
+    // Verificar si se necesita actualizar el tipo de cuenta
+    if (id_tipo_cuenta) {
+      const tipoCuenta = await this.tiposCuentasContablesRepository.findOne({
+        where: { id_tipo_cuenta },
+      });
+
+      if (!tipoCuenta) {
+        throw new HttpException('Tipo de cuenta no encontrado', HttpStatus.NOT_FOUND);
+      }
+
+      subdivision.tipo_cuenta = tipoCuenta;  // Actualizar la relación con tipo de cuenta
+    }
+
+    Object.assign(subdivision, rest);
+
+    return await this.subdivisionCuentasRepository.save(subdivision);
   }
 
+  // Función para eliminar una subdivisión
   async remove(id_subdivision: number) {
-    return await this.subdivisioncuentascontablesRepository.softDelete(id_subdivision) ;
+    const subdivision = await this.subdivisionCuentasRepository.findOne({
+      where: { id_subdivision },
+    });
+
+    if (!subdivision) {
+      throw new HttpException('Subdivisión no encontrada', HttpStatus.NOT_FOUND);
+    }
+
+    return await this.subdivisionCuentasRepository.softDelete(id_subdivision);
   }
+
 }
 

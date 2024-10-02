@@ -45,9 +45,12 @@ export class TiposDomiciliosService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.tiposDomiciliosRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el tipo de domicilio existe antes de eliminar
+    const tipoDomicilio = await this.tiposDomiciliosRepository.findOne({ where: { id_tipo_domicilio: id } });
+    if (!tipoDomicilio) {
       throw new NotFoundException(`Tipo de domicilio con ID ${id} no encontrado`);
     }
+
+    await this.tiposDomiciliosRepository.softDelete(id);
   }
 }

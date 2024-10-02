@@ -9,6 +9,7 @@ export class CreateTiposPolizaDto {
   @IsOptional()
   @IsString()
   descripcion: string;
+  
   @IsOptional()
   @Type(() => Date)
   created_at?: Date;

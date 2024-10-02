@@ -28,11 +28,12 @@ export class TiposPoliza {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  // Relación uno a muchos con PolizasContable
-  @OneToMany(() => PolizasContable, (polizaContable) => polizaContable.tipo_poliza)
+  // Relaciones
+  @OneToMany(() => PolizasContable, polizaContable => polizaContable.tipo_poliza)
   polizas: PolizasContable[];
 
-  // Relación uno a muchos con FoliosPolizasPeriodo
-  @OneToMany(() => FoliosPolizasPeriodo, (foliosPolizasPeriodo) => foliosPolizasPeriodo.tipo_poliza)
+  @OneToMany(() => FoliosPolizasPeriodo, folio => folio.tipo_poliza)
   folios: FoliosPolizasPeriodo[];
+
+  
 }

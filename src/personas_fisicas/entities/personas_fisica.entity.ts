@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne } from 'typeorm';
+import { MaestroPersona } from 'src/maestro_personas/entities/maestro_persona.entity';
 
 @Entity('personas_fisicas')
 export class PersonasFisica {
@@ -37,6 +38,10 @@ export class PersonasFisica {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+     // Relación uno a uno con la tabla maestro_personas
+     @OneToOne(() => MaestroPersona, persona => persona.persona_fisica)
+     persona: MaestroPersona;
 
 
 

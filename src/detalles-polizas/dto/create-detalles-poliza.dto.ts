@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsDecimal, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsDecimal, IsString, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateDetallesPolizaDto {
@@ -37,4 +37,13 @@ export class CreateDetallesPolizaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_poliza:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_cuenta:number;
+
 }

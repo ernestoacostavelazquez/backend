@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, DeleteDateColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { PartesAlmacen } from 'src/partes_almacen/entities/partes_almacen.entity';
+import { UbicacionesAlmacen } from 'src/ubicaciones_almacen/entities/ubicaciones_almacen.entity';
 
 @Entity('almacenes')
 export class Almacen {
@@ -28,4 +30,11 @@ export class Almacen {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => PartesAlmacen, parteAlmacen => parteAlmacen.almacen)
+    partes_almacen: PartesAlmacen[];
+
+    @OneToMany(() => UbicacionesAlmacen, ubicacion => ubicacion.almacen)
+    ubicaciones_almacen: UbicacionesAlmacen[];
+
 }

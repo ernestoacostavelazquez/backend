@@ -1,4 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { MaestroPersona } from 'src/maestro_personas/entities/maestro_persona.entity';
+import { TiposDomicilio } from 'src/tipos_domicilios/entities/tipos_domicilio.entity';
+import { CodigosPostal } from 'src/codigos_postales/entities/codigos_postale.entity';
+
 
 @Entity('domicilios_persona')
 export class DomiciliosPersona {
@@ -30,5 +34,17 @@ export class DomiciliosPersona {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @ManyToOne(() => MaestroPersona, persona => persona.domicilios)
+    @JoinColumn({ name: 'id_persona' })
+    persona: MaestroPersona;
 
+    @ManyToOne(() => CodigosPostal, codigo => codigo.domicilios)
+    @JoinColumn({ name: 'id_codigo_postal' })
+    codigo_postal: CodigosPostal;
+
+    @ManyToOne(() => TiposDomicilio, tipo => tipo.domicilios)
+    @JoinColumn({ name: 'id_tipo_domicilio' })
+    tipo_domicilio: TiposDomicilio;
+
+  
 }

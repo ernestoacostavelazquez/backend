@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, JoinColumn } from 'typeorm';
+import { MaestroParte } from 'src/maestro_partes/entities/maestro_parte.entity';
 
 @Entity('unidad_medida')
 export class UnidadMedida {
@@ -25,6 +26,9 @@ export class UnidadMedida {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => MaestroParte, parte => parte.unidad_medida)
+  maestro_partes: MaestroParte[];
 
 
 }

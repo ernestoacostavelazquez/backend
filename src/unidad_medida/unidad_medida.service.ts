@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUnidadMedidaDto } from './dto/create-unidad_medida.dto';
 import { UpdateUnidadMedidaDto } from './dto/update-unidad_medida.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,15 +23,31 @@ export class UnidadMedidaService {
   }
 
   async findOne(id: number): Promise<UnidadMedida> {
-    return this.unidadMedidaRepository.findOne({ where: { id_unidad: id } });
+    // Verificar si la unidad de medida existe
+    const unidadMedida = await this.unidadMedidaRepository.findOne({ where: { id_unidad: id } });
+    if (!unidadMedida) {
+      throw new NotFoundException(`Unidad de medida con ID ${id} no encontrada`);
+    }
+    return unidadMedida;
   }
 
   async update(id: number, updateUnidadMedidaDto: UpdateUnidadMedidaDto): Promise<void> {
+    // Verificar si la unidad de medida existe antes de actualizar
+    const unidadMedida = await this.unidadMedidaRepository.findOne({ where: { id_unidad: id } });
+    if (!unidadMedida) {
+      throw new NotFoundException(`Unidad de medida con ID ${id} no encontrada`);
+    }
+
     await this.unidadMedidaRepository.update(id, updateUnidadMedidaDto);
   }
 
   async remove(id: number): Promise<void> {
-    await this.unidadMedidaRepository.delete(id);
+    // Verificar si la unidad de medida existe antes de eliminar
+    const unidadMedida = await this.unidadMedidaRepository.findOne({ where: { id_unidad: id } });
+    if (!unidadMedida) {
+      throw new NotFoundException(`Unidad de medida con ID ${id} no encontrada`);
+    }
+
+    await this.unidadMedidaRepository.softDelete(id);
   }
- 
 }

@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, DeleteDateColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, DeleteDateColumn, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { MaestroParte } from 'src/maestro_partes/entities/maestro_parte.entity';
+import { Almacen } from 'src/almacenes/entities/almacene.entity';
 
 @Entity('partes_almacen')
 export class PartesAlmacen {
@@ -29,5 +31,12 @@ export class PartesAlmacen {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @ManyToOne(() => MaestroParte, parte => parte.partes_almacen)
+    @JoinColumn({ name: 'id_parte' })
+    parte: MaestroParte;
+
+    @ManyToOne(() => Almacen, almacen => almacen.partes_almacen)
+    @JoinColumn({ name: 'id_almacen' })
+    almacen: Almacen; 
 
 }

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateDomiciliosPersonaDto {
@@ -30,4 +30,16 @@ export class CreateDomiciliosPersonaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_persona:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_codigo_postal:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_tipo_domicilio:number;
 }

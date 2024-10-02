@@ -28,11 +28,7 @@ export class TiposCuentasContables {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() =>  SubdivisionCuentasContable, subdivisioncuentascontable => subdivisioncuentascontable.id_tipo_cuenta)
-  @JoinColumn({ name: 'id_subdivision' })
-   id_subdivision : SubdivisionCuentasContable[]
-
-  // id_subdivision : SubdivisionCuentasContable[]
-
-
+  // Relaciones
+  @OneToMany(() => SubdivisionCuentasContable, (subdivision) => subdivision.tipo_cuenta)
+  subdivisiones: SubdivisionCuentasContable[];
 }

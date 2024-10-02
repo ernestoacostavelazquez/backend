@@ -43,9 +43,12 @@ export class CodigosPostalesService {
 
   // Eliminar un código postal por ID
   async remove(id: number): Promise<void> {
-    const result = await this.codigosPostalesRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el código postal existe antes de eliminar
+    const codigoPostal = await this.codigosPostalesRepository.findOne({ where: { id_codigo_postal: id } });
+    if (!codigoPostal) {
       throw new NotFoundException(`Código postal con ID ${id} no encontrado`);
     }
+
+    await this.codigosPostalesRepository.softDelete(id);
   }
 }

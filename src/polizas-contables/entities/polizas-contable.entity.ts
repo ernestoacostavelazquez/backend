@@ -36,11 +36,11 @@ export class PolizasContable {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  // Relaciones
   @OneToMany(() => DetallesPoliza, (detallesPoliza) => detallesPoliza.poliza_contable)
   detalles: DetallesPoliza[];
 
-  // Relación muchos a uno con TiposPoliza
-  @ManyToOne(() => TiposPoliza, (tipo_poliza) => tipo_poliza.polizas)
-  @JoinColumn({ name: 'id_tipo_poliza' })  // Especificar la clave foránea
+  @ManyToOne(() => TiposPoliza, (tipoPoliza) => tipoPoliza.polizas)
   tipo_poliza: TiposPoliza;
+
 }

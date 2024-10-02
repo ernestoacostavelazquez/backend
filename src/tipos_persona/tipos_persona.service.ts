@@ -43,9 +43,12 @@ export class TiposPersonaService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.tiposPersonaRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el tipo de persona existe antes de eliminar
+    const tipoPersona = await this.tiposPersonaRepository.findOne({ where: { id_tipo_persona: id } });
+    if (!tipoPersona) {
       throw new NotFoundException(`Tipo de persona con ID ${id} no encontrado`);
     }
+
+    await this.tiposPersonaRepository.softDelete(id);
   }
 }

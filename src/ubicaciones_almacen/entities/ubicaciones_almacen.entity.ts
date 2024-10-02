@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Almacen } from 'src/almacenes/entities/almacene.entity';
 
 @Entity('ubicaciones_almacen')
 export class UbicacionesAlmacen {
@@ -25,5 +26,10 @@ export class UbicacionesAlmacen {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @ManyToOne(() => Almacen, almacen => almacen.ubicaciones_almacen)
+    @JoinColumn({ name: 'id_almacen' })
+    almacen: Almacen;
+
 
 }

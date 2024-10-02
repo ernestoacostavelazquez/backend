@@ -46,10 +46,13 @@ export class EstadosCivilService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.estadosCivilRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el estado civil existe antes de eliminar
+    const estadoCivil = await this.estadosCivilRepository.findOne({ where: { id_estado_civil: id } });
+    if (!estadoCivil) {
       throw new NotFoundException(`Estado civil con ID ${id} no encontrado`);
     }
+
+    await this.estadosCivilRepository.delete(id);
   }
   
 }

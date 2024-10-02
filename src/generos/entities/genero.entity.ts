@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, JoinColumn } from 'typeorm';
+import { MaestroPersona } from 'src/maestro_personas/entities/maestro_persona.entity';
 
 @Entity('generos')
 export class Genero {
@@ -22,5 +23,8 @@ export class Genero {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @OneToMany(() => MaestroPersona, persona => persona.genero)
+    personas: MaestroPersona[];
 
 }

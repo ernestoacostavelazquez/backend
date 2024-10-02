@@ -34,14 +34,11 @@ export class SaldosPeriodo {
     @DeleteDateColumn()
     deletedAt: Date;
 
-     // Relación muchos a uno con PeriodosContable
-     @ManyToOne(() => PeriodosContable, (periodosContable) => periodosContable.saldos)
-     @JoinColumn({ name: 'id_periodo' })
-     periodo_contable: PeriodosContable;
+    // Relaciones
+    @ManyToOne(() => PeriodosContable, (periodo) => periodo.saldos)
+    periodo_contable: PeriodosContable;
 
-     // Relación muchos a uno con CuentasContable
-    @ManyToOne(() => CuentasContable, (cuenta_contable) => cuenta_contable.saldos)
-    @JoinColumn({ name: 'id_cuenta' })  // Usa id_cuenta para la relación
+    @ManyToOne(() => CuentasContable, (cuenta) => cuenta.saldos)
     cuenta_contable: CuentasContable;
 
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEmail, IsEnum, IsString, IsDate, IsPhoneNumber, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEmail, IsEnum, IsString, IsDate, IsPhoneNumber, Length, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateMaestroPersonaDto {
@@ -26,5 +26,17 @@ export class CreateMaestroPersonaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_genero:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_tipo_persona:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_estado_civil:number;
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlmaceneDto } from './dto/create-almacene.dto';
 import { UpdateAlmaceneDto } from './dto/update-almacene.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,15 +23,31 @@ export class AlmacenesService {
   }
 
   async findOne(id: number): Promise<Almacen> {
-    return await this.almacenesRepository.findOneBy({ id_almacen: id });
+    // Validar que el ID existe
+    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
+    if (!almacen) {
+      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
+    }
+    return almacen;
   }
 
   async update(id: number, updateAlmacenDto: UpdateAlmaceneDto): Promise<void> {
+    // Validar que el ID existe
+    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
+    if (!almacen) {
+      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
+    }
+    
     await this.almacenesRepository.update(id, updateAlmacenDto);
   }
 
   async remove(id: number): Promise<void> {
-    await this.almacenesRepository.delete(id);
-  }
+    // Validar que el ID existe
+    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
+    if (!almacen) {
+      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
+    }
 
+    await this.almacenesRepository.softDelete(id);
+  }
 }

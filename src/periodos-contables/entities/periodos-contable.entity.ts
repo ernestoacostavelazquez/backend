@@ -34,11 +34,11 @@ export class PeriodosContable {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @OneToMany(() => SaldosPeriodo, (saldosPeriodo) => saldosPeriodo.periodo_contable)
+    // Relaciones
+    @OneToMany(() => SaldosPeriodo, (saldos) => saldos.periodo_contable)
     saldos: SaldosPeriodo[];
 
-    // Relación uno a muchos con FoliosPolizasPeriodo
-    @OneToMany(() => FoliosPolizasPeriodo, (foliosPolizasPeriodo) => foliosPolizasPeriodo.periodo_contable)
+    @OneToMany(() => FoliosPolizasPeriodo, (folios) => folios.periodo_contable)
     folios: FoliosPolizasPeriodo[];
-    
+
 }

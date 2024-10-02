@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreatePartesAlmacenDto {
@@ -25,4 +25,12 @@ export class CreatePartesAlmacenDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_almacen:number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_parte:number;
 }

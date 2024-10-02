@@ -44,10 +44,13 @@ export class GenerosService {
   }
 
   async remove(id: number): Promise<void> {
-    const result = await this.generosRepository.delete(id);
-    if (result.affected === 0) {
+    // Verificar si el género existe antes de eliminar
+    const genero = await this.generosRepository.findOne({ where: { id_genero: id } });
+    if (!genero) {
       throw new NotFoundException(`Género con ID ${id} no encontrado`);
     }
+
+    await this.generosRepository.softDelete(id);
   }
  
 }

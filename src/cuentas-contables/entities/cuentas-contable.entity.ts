@@ -35,16 +35,15 @@ export class CuentasContable {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  // Relación uno a muchos con DetallesPoliza
+   // Relaciones
   @OneToMany(() => DetallesPoliza, (detallesPoliza) => detallesPoliza.cuenta_contable)
   detalles: DetallesPoliza[];
 
-  // Relación uno a muchos con SaldosPeriodo
   @OneToMany(() => SaldosPeriodo, (saldosPeriodo) => saldosPeriodo.cuenta_contable)
   saldos: SaldosPeriodo[];
 
-  // Relación muchos a uno con SubdivisionCuentasContable
-  @ManyToOne(() => SubdivisionCuentasContable, (subdivision) => subdivision.id_cuenta)
-  @JoinColumn({ name: 'id_subdivision' })  // Clave foránea
+  @ManyToOne(() => SubdivisionCuentasContable, (subdivision) => subdivision.cuentas)
   subdivision: SubdivisionCuentasContable;
+
+ 
 }
