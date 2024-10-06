@@ -33,6 +33,9 @@ export class CodigosPostal {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => DomiciliosPersona, domicilio => domicilio.codigo_postal)
     domicilios: DomiciliosPersona[];
 

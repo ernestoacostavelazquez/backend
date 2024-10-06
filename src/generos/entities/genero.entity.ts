@@ -24,6 +24,9 @@ export class Genero {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => MaestroPersona, persona => persona.genero)
     personas: MaestroPersona[];
 

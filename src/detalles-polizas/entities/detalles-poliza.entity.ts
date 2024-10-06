@@ -37,6 +37,9 @@ export class DetallesPoliza {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @Column({ type: 'boolean', default: true })
+  estatus: boolean;
+
   // Relaciones
   @ManyToOne(() => PolizasContable, polizaContable => polizaContable.detalles)
   @JoinColumn({ name: 'id_poliza' })

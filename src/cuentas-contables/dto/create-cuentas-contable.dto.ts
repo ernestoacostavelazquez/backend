@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEnum, IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsOptional, IsString, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCuentasContableDto {
@@ -11,12 +11,12 @@ export class CreateCuentasContableDto {
   nombre_cuenta: string;
 
   @IsNotEmpty()
-  @IsEnum(['Deudora', 'Acreedora'])
+  @IsEnum(['Deudora', 'Acreedora', 'No Aplica'])
   naturaleza: string;
 
-  @IsOptional()
-  @IsString()
-  descripcion?: string;
+  @IsNotEmpty()
+  @IsEnum(['Titulo','Mayor', 'Auxiliar'])
+  tipo: string;
 
   @IsOptional()
   @Type(() => Date)
@@ -34,7 +34,11 @@ export class CreateCuentasContableDto {
   @IsString()
   updated_by?: string;
 
+  @IsBoolean()
+  estatus: boolean;
+
   @IsNumber()
   @IsNotEmpty()
-  id_subdivision:number;
+  id_grupo_genero:number;
+
 }

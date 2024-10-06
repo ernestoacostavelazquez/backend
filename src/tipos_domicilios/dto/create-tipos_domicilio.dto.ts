@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTiposDomicilioDto {
@@ -22,6 +22,9 @@ export class CreateTiposDomicilioDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
 
 }

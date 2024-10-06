@@ -27,6 +27,9 @@ export class UnidadMedida {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @Column({ type: 'boolean', default: true })
+  estatus: boolean;
+
   @OneToMany(() => MaestroParte, parte => parte.unidad_medida)
   maestro_partes: MaestroParte[];
 

@@ -16,9 +16,6 @@ export class MaestroPersona {
     @Column({ unique:true, type: 'varchar', length: 13, nullable: true })
     rfc:string;
   
-    @Column({ type: 'enum', enum: ['Activo', 'Inactivo'], default: 'Activo' })
-    estatus: string;
-
     @CreateDateColumn()
     created_at: Date;
 
@@ -33,6 +30,9 @@ export class MaestroPersona {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
 
     @OneToOne(() => PersonasFisica)
     @JoinColumn({ name: 'id_persona_fisica' })

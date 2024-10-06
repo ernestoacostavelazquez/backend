@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Type } from 'class-transformer';
 
 export class CreatePeriodosContableDto {
@@ -34,4 +34,7 @@ export class CreatePeriodosContableDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 }

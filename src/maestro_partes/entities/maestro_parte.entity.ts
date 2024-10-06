@@ -32,10 +32,7 @@ export class MaestroParte {
     // Cambiar el tipo a 'TIMESTAMP' o 'DATETIME'
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     fecha_alta: Date;
-  
-    @Column({ type: 'enum', enum: ['Activo', 'Inactivo'], default: 'Activo' })
-    estatus: string;
-  
+    
     @Column({ type: 'varchar', length: 50, nullable: true })
     garantia: string;
 
@@ -53,6 +50,9 @@ export class MaestroParte {
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
 
     @OneToMany(() => PartesAlmacen, parteAlmacen => parteAlmacen.parte)
     partes_almacen: PartesAlmacen[];

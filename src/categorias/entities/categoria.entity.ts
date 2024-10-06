@@ -24,6 +24,9 @@ export class Categoria {
   @Column({ nullable: true })
   updated_by: string;
 
+  @Column({ type: 'boolean', default: true })
+  estatus: boolean;
+
   @OneToMany(() => MaestroParte, parte => parte.categoria)
   maestro_partes: MaestroParte[];
   

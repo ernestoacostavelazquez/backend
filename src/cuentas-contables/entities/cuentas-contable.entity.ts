@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { DetallesPoliza } from 'src/detalles-polizas/entities/detalles-poliza.entity';
 import { SaldosPeriodo } from 'src/saldos-periodos/entities/saldos-periodo.entity';
-import { SubdivisionCuentasContable } from 'src/subdivision-cuentas-contables/entities/subdivision-cuentas-contable.entity';
+import { GruposGenerosCuenta } from 'src/grupos_generos_cuentas/entities/grupos_generos_cuenta.entity';
 
 @Entity('cuentas_contables')
 export class CuentasContable {
@@ -14,11 +14,11 @@ export class CuentasContable {
   @Column({ type: 'varchar', length: 100 })
   nombre_cuenta: string;
 
-  @Column({ type: 'enum', enum: ['Deudora', 'Acreedora'] })
+  @Column({ type: 'enum', enum: ['Deudora', 'Acreedora', 'No Aplica'] })
   naturaleza: string;
 
-  @Column({ type: 'text', nullable: true })
-  descripcion: string;
+  @Column({ type: 'enum', enum: ['Titulo','Mayor', 'Auxiliar'] })
+  tipo: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -35,6 +35,9 @@ export class CuentasContable {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @Column({ type: 'boolean'})
+  estatus: boolean;
+
    // Relaciones
   @OneToMany(() => DetallesPoliza, (detallesPoliza) => detallesPoliza.cuenta_contable)
   detalles: DetallesPoliza[];
@@ -42,8 +45,8 @@ export class CuentasContable {
   @OneToMany(() => SaldosPeriodo, (saldosPeriodo) => saldosPeriodo.cuenta_contable)
   saldos: SaldosPeriodo[];
 
-  @ManyToOne(() => SubdivisionCuentasContable, (subdivision) => subdivision.cuentas)
-  subdivision: SubdivisionCuentasContable;
-
- 
+  // Relación ManyToOne con GruposGenerosCuenta (cada cuenta contable pertenece a un grupo de género)
+  @ManyToOne(() => GruposGenerosCuenta, grupo => grupo.cuentas)
+  @JoinColumn({ name: 'id_grupo_genero' })  // Clave foránea que conecta con GruposGenerosCuenta
+  grupoGenero: GruposGenerosCuenta;
 }

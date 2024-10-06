@@ -24,6 +24,9 @@ export class TiposDomicilio {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => DomiciliosPersona, domicilio => domicilio.tipo_domicilio)
     domicilios: DomiciliosPersona[];  
 

@@ -25,6 +25,9 @@ export class EstadosCivil {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => MaestroPersona, persona => persona.estado_civil)
     personas: MaestroPersona[];  
 

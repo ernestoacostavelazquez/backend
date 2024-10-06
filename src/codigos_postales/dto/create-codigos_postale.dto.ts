@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCodigosPostaleDto {
@@ -33,5 +33,8 @@ export class CreateCodigosPostaleDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
 }

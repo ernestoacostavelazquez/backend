@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateFoliosPolizasPeriodoDto {
   @IsInt()
@@ -8,6 +8,9 @@ export class CreateFoliosPolizasPeriodoDto {
   @IsNotEmpty()
   @IsString()
   nombre_tipo_poliza: string;
+
+  @IsBoolean()
+  estatus: boolean;
 
   @IsNumber()
   @IsNotEmpty()

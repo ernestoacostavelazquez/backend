@@ -4,7 +4,7 @@ import { UpdateCuentasContableDto } from './dto/update-cuentas-contable.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CuentasContable } from './entities/cuentas-contable.entity';
 import { Repository } from 'typeorm';
-import { SubdivisionCuentasContable } from 'src/subdivision-cuentas-contables/entities/subdivision-cuentas-contable.entity';
+import { GruposGenerosCuenta } from 'src/grupos_generos_cuentas/entities/grupos_generos_cuenta.entity';
 
 @Injectable()
 export class CuentasContablesService {
@@ -13,27 +13,27 @@ export class CuentasContablesService {
     @InjectRepository(CuentasContable)
     private cuentascontableRepository: Repository<CuentasContable>,
     
-    @InjectRepository(SubdivisionCuentasContable)
-    private subdivisionCuentasRepository: Repository<SubdivisionCuentasContable>, // Repositorio de subdivision_cuentas_contable
+    @InjectRepository(GruposGenerosCuenta)
+    private gruposGenerosRepository: Repository<GruposGenerosCuenta>,  // Repositorio para GruposGenerosCuenta
   ) {}
 
   // Función para crear una nueva cuenta contable
   async create(createCuentasContableDto: CreateCuentasContableDto) {
-    const { id_subdivision, ...rest } = createCuentasContableDto;
+    const { id_grupo_genero, ...rest } = createCuentasContableDto;
 
-    // Verificar si la subdivisión existe
-    const subdivision = await this.subdivisionCuentasRepository.findOne({
-      where: { id_subdivision },
+    // Verificar si el grupo de género de cuenta existe
+    const grupoGenero = await this.gruposGenerosRepository.findOne({
+      where: { id_grupo_genero },
     });
 
-    if (!subdivision) {
-      throw new HttpException('Subdivisión no encontrada', HttpStatus.NOT_FOUND);
+    if (!grupoGenero) {
+      throw new HttpException('Grupo de género no encontrado', HttpStatus.NOT_FOUND);
     }
 
-    // Crear la cuenta contable y asociarla con la subdivisión
+    // Crear la cuenta contable y asociarla con la subdivisión y el grupo de género
     const newCuenta = this.cuentascontableRepository.create({
       ...rest,
-      subdivision,  // Relación con la subdivisión
+      grupoGenero,  // Relación con el grupo de género
     });
 
     return await this.cuentascontableRepository.save(newCuenta);
@@ -42,7 +42,7 @@ export class CuentasContablesService {
   // Función para encontrar todas las cuentas contables
   async findAll() {
     return await this.cuentascontableRepository.find({
-      relations: ['subdivision'], // Incluir la relación con subdivision
+      relations: ['grupoGenero'], // Incluir la relación con subdivision y grupoGenero
     });
   }
 
@@ -50,7 +50,7 @@ export class CuentasContablesService {
   async findOne(id_cuenta: number) {
     const cuenta = await this.cuentascontableRepository.findOne({
       where: { id_cuenta },
-      relations: ['subdivision'], // Incluir la relación con subdivision
+      relations: ['grupoGenero'], // Incluir la relación con subdivision y grupoGenero
     });
 
     if (!cuenta) {
@@ -62,29 +62,29 @@ export class CuentasContablesService {
 
   // Función para actualizar una cuenta contable existente
   async update(id_cuenta: number, updateCuentasContableDto: UpdateCuentasContableDto) {
-    const { id_subdivision, ...rest } = updateCuentasContableDto;
+    const { id_grupo_genero, ...rest } = updateCuentasContableDto;
 
     // Buscar la cuenta existente
     const cuenta = await this.cuentascontableRepository.findOne({
       where: { id_cuenta },
-      relations: ['subdivision'],
+      relations: ['grupoGenero'],
     });
 
     if (!cuenta) {
       throw new HttpException('Cuenta no encontrada', HttpStatus.NOT_FOUND);
     }
 
-    // Verificar si se necesita actualizar la subdivisión
-    if (id_subdivision) {
-      const subdivision = await this.subdivisionCuentasRepository.findOne({
-        where: { id_subdivision },
+    // Verificar si se necesita actualizar el grupo de género
+    if (id_grupo_genero) {
+      const grupoGenero = await this.gruposGenerosRepository.findOne({
+        where: { id_grupo_genero },
       });
 
-      if (!subdivision) {
-        throw new HttpException('Subdivisión no encontrada', HttpStatus.NOT_FOUND);
+      if (!grupoGenero) {
+        throw new HttpException('Grupo de género no encontrado', HttpStatus.NOT_FOUND);
       }
 
-      cuenta.subdivision = subdivision;  // Actualizar la relación con la subdivisión
+      cuenta.grupoGenero = grupoGenero;  // Actualizar la relación con el grupo de género
     }
 
     Object.assign(cuenta, rest);

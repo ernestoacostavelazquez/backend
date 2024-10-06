@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateUnidadMedidaDto {
-  @IsNotEmpty()
-  @IsString()
-  nombre: string;
+    @IsNotEmpty()
+    @IsString()
+    nombre: string;
 
-  @IsOptional()
-  @IsString()
-  descripcion?: string;
+    @IsOptional()
+    @IsString()
+    descripcion?: string;
 
-  @IsOptional()
+    @IsOptional()
     @Type(() => Date)
     created_at?: Date;
 
@@ -25,4 +25,7 @@ export class CreateUnidadMedidaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 }

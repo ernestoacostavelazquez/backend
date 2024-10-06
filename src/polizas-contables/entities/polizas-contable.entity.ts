@@ -36,11 +36,15 @@ export class PolizasContable {
   @DeleteDateColumn()
   deletedAt: Date;
 
+  @Column({ type: 'boolean', default: true })
+  estatus: boolean;
+
   // Relaciones
   @OneToMany(() => DetallesPoliza, (detallesPoliza) => detallesPoliza.poliza_contable)
   detalles: DetallesPoliza[];
 
   @ManyToOne(() => TiposPoliza, (tipoPoliza) => tipoPoliza.polizas)
+  @JoinColumn({ name: 'id_tipo_poliza' })  // Clave foránea
   tipo_poliza: TiposPoliza;
 
 }

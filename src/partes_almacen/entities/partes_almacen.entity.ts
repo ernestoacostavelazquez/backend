@@ -31,6 +31,9 @@ export class PartesAlmacen {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @ManyToOne(() => MaestroParte, parte => parte.partes_almacen)
     @JoinColumn({ name: 'id_parte' })
     parte: MaestroParte;

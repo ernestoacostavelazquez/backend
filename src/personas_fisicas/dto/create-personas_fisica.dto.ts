@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEmail, IsString, IsDate, IsPhoneNumber, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEmail, IsString, IsDate, IsPhoneNumber, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreatePersonasFisicaDto {
@@ -42,7 +42,10 @@ export class CreatePersonasFisicaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
-    
+
+    @IsBoolean()
+    estatus: boolean;
+
     @IsNumber()
     @IsNotEmpty()
     id_persona:number;

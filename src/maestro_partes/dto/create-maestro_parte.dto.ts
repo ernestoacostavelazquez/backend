@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEnum, IsDecimal, IsInt, IsString, IsNumber, Min } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEnum, IsDecimal, IsInt, IsString, IsNumber, Min, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateMaestroParteDto {
@@ -29,11 +29,7 @@ export class CreateMaestroParteDto {
     @IsString()
     @IsOptional()
     numero_parte_fabricante?: string;
-  
-    @IsEnum(['Activo', 'Inactivo'])
-    @IsOptional()
-    estatus?: string;
-  
+   
     @IsString()
     @IsOptional()
     garantia?: string;
@@ -53,6 +49,9 @@ export class CreateMaestroParteDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
     @IsNumber()
     @IsNotEmpty()

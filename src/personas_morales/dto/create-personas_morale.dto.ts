@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreatePersonasMoraleDto {
@@ -26,6 +26,9 @@ export class CreatePersonasMoraleDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
     @IsNumber()
     @IsNotEmpty()

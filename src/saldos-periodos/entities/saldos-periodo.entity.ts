@@ -34,11 +34,16 @@ export class SaldosPeriodo {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     // Relaciones
     @ManyToOne(() => PeriodosContable, (periodo) => periodo.saldos)
+    @JoinColumn({ name: 'id_periodo' })  // Clave foránea
     periodo_contable: PeriodosContable;
 
     @ManyToOne(() => CuentasContable, (cuenta) => cuenta.saldos)
+    @JoinColumn({ name: 'id_cuenta' })  // Clave foránea
     cuenta_contable: CuentasContable;
 
 }

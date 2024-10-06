@@ -1,4 +1,4 @@
-import { IsOptional, IsDateString, IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsOptional, IsDateString, IsString, IsNumber, IsNotEmpty, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateRolesPersonaDto {
@@ -21,6 +21,9 @@ export class CreateRolesPersonaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
     @IsNumber()
     @IsNotEmpty()

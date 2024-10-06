@@ -24,6 +24,9 @@ export class Rol {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => RolesPersona, rolPersona => rolPersona.rol)
     roles_persona: RolesPersona[];
    

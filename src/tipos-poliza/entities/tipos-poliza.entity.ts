@@ -10,6 +10,9 @@ export class TiposPoliza {
   @Column({ type: 'varchar', length: 50 })
   nombre_tipo_poliza: string;
 
+  @Column({ type: 'varchar', length: 5 })
+  abreviatura: string;
+
   @Column({ type: 'text', nullable: true })
   descripcion: string;
 
@@ -27,6 +30,9 @@ export class TiposPoliza {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @Column({ type: 'boolean', default: true })
+  estatus: boolean;
 
   // Relaciones
   @OneToMany(() => PolizasContable, polizaContable => polizaContable.tipo_poliza)

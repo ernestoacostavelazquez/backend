@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LineasModule } from './lineas/lineas.module';
-import { TiposCuentasContablesModule } from './tipos-cuentas-contables/tipos-cuentas-contables.module';
-import { SubdivisionCuentasContablesModule } from './subdivision-cuentas-contables/subdivision-cuentas-contables.module';
 import { TiposPolizaModule } from './tipos-poliza/tipos-poliza.module';
 import { PeriodosContablesModule } from './periodos-contables/periodos-contables.module';
 import { CuentasContablesModule } from './cuentas-contables/cuentas-contables.module';
@@ -30,6 +28,8 @@ import { CodigosPostalesModule } from './codigos_postales/codigos_postales.modul
 import { MaestroPersonasModule } from './maestro_personas/maestro_personas.module';
 import { PersonasFisicasModule } from './personas_fisicas/personas_fisicas.module';
 import { PersonasMoralesModule } from './personas_morales/personas_morales.module';
+import { GenerosCuentasContablesModule } from './generos_cuentas_contables/generos_cuentas_contables.module';
+import { GruposGenerosCuentasModule } from './grupos_generos_cuentas/grupos_generos_cuentas.module';
 
 @Module({
   imports: [
@@ -45,8 +45,6 @@ import { PersonasMoralesModule } from './personas_morales/personas_morales.modul
     }),
     UsersModule,
     LineasModule,
-    TiposCuentasContablesModule,
-    SubdivisionCuentasContablesModule,
     TiposPolizaModule,
     PeriodosContablesModule,
     CuentasContablesModule,
@@ -71,6 +69,8 @@ import { PersonasMoralesModule } from './personas_morales/personas_morales.modul
     MaestroPersonasModule,
     PersonasFisicasModule,
     PersonasMoralesModule,
+    GenerosCuentasContablesModule,
+    GruposGenerosCuentasModule,
     ],
   controllers: [AppController],
   providers: [AppService],

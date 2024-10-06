@@ -27,6 +27,9 @@ export class UbicacionesAlmacen {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @ManyToOne(() => Almacen, almacen => almacen.ubicaciones_almacen)
     @JoinColumn({ name: 'id_almacen' })
     almacen: Almacen;

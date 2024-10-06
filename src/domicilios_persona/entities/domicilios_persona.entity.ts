@@ -34,6 +34,9 @@ export class DomiciliosPersona {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @ManyToOne(() => MaestroPersona, persona => persona.domicilios)
     @JoinColumn({ name: 'id_persona' })
     persona: MaestroPersona;

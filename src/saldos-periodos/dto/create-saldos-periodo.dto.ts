@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsDecimal, IsOptional, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsDecimal, IsOptional, IsString, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateSaldosPeriodoDto {
@@ -33,6 +33,9 @@ export class CreateSaldosPeriodoDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
     @IsNumber()
     @IsNotEmpty()

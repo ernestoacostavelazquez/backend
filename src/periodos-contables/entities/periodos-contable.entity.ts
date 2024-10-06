@@ -34,6 +34,9 @@ export class PeriodosContable {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     // Relaciones
     @OneToMany(() => SaldosPeriodo, (saldos) => saldos.periodo_contable)
     saldos: SaldosPeriodo[];

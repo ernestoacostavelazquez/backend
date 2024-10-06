@@ -31,6 +31,9 @@ export class Almacen {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
     @OneToMany(() => PartesAlmacen, parteAlmacen => parteAlmacen.almacen)
     partes_almacen: PartesAlmacen[];
 

@@ -1,17 +1,16 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateSubdivisionCuentasContableDto {
+export class CreateGruposGenerosCuentaDto {
 
-    @IsNumber()
-    @IsNotEmpty()
-    codigo_subdivision:number;
-
+    
     @IsString()
-    @IsNotEmpty()
-    nombre_subdivision:string;
-   
-   
+    @MaxLength(100)
+    nombre_grupo: string;
+
+    @IsInt()
+    codigo_grupo: number;
+
     @IsOptional()
     @Type(() => Date)
     created_at?: Date;
@@ -28,9 +27,10 @@ export class CreateSubdivisionCuentasContableDto {
     @IsString()
     updated_by?: string;
 
+    @IsBoolean()
+    estatus: boolean;
+
     @IsNumber()
     @IsNotEmpty()
-    id_tipo_cuenta:number;
-    
-
+    id_genero_cuenta:number;
 }

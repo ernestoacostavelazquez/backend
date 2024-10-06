@@ -1,10 +1,14 @@
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTiposPolizaDto {
   @IsNotEmpty()
   @IsString()
   nombre_tipo_poliza: string;
+
+  @IsNotEmpty()
+  @IsString()
+  abreviatura: string;
 
   @IsOptional()
   @IsString()
@@ -25,4 +29,7 @@ export class CreateTiposPolizaDto {
   @IsOptional()
   @IsString()
   updated_by?: string;
+
+  @IsBoolean()
+  estatus: boolean;
 }

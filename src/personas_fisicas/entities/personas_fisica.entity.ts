@@ -39,6 +39,9 @@ export class PersonasFisica {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
      // Relación uno a uno con la tabla maestro_personas
      @OneToOne(() => MaestroPersona, persona => persona.persona_fisica)
      persona: MaestroPersona;

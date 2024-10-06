@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsEmail, IsEnum, IsString, IsDate, IsPhoneNumber, Length, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsEmail, IsEnum, IsString, IsDate, IsPhoneNumber, Length, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateMaestroPersonaDto {
@@ -8,9 +8,6 @@ export class CreateMaestroPersonaDto {
     @IsNotEmpty()
     rfc: string;
 
-    @IsEnum(['Activo', 'Inactivo'])
-    estatus: string;
-    
     @IsOptional()
     @Type(() => Date)
     created_at?: Date;
@@ -26,6 +23,9 @@ export class CreateMaestroPersonaDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 
     @IsNumber()
     @IsNotEmpty()

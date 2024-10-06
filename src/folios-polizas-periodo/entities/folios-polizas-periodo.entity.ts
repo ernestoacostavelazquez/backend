@@ -10,12 +10,17 @@ export class FoliosPolizasPeriodo {
     @Column({ type: 'int', nullable: false })
     ultimo_folio: number;
 
-     // Relaciones
-     @ManyToOne(() => TiposPoliza, (tipoPoliza) => tipoPoliza.folios)
-     tipo_poliza: TiposPoliza;
+    @Column({ type: 'boolean', default: true })
+    estatus: boolean;
+
+    // Relaciones
+    @ManyToOne(() => TiposPoliza, (tipoPoliza) => tipoPoliza.folios)
+    @JoinColumn({ name: 'id_tipo_poliza' })  // Clave foránea
+    tipo_poliza: TiposPoliza;
  
-     @ManyToOne(() => PeriodosContable, (periodo) => periodo.folios)
-     periodo_contable: PeriodosContable;
+    @ManyToOne(() => PeriodosContable, (periodo) => periodo.folios)
+    @JoinColumn({ name: 'id_periodo' })  // Clave foránea
+    periodo_contable: PeriodosContable;
 
     
 }

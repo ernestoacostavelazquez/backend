@@ -1,18 +1,15 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsInt, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 
-
-export class CreateTiposCuentasContableDto {
-
-    @IsNumber()
-    @IsNotEmpty()
-    codigo_tipo:number;
-
+export class CreateGenerosCuentasContableDto {
+    
     @IsString()
-    @IsNotEmpty()
-    nombre_tipo:string;
-   
-   
+    @MaxLength(100)
+    nombre_genero: string;
+
+    @IsInt()
+    codigo_genero: number;
+
     @IsOptional()
     @Type(() => Date)
     created_at?: Date;
@@ -29,7 +26,6 @@ export class CreateTiposCuentasContableDto {
     @IsString()
     updated_by?: string;
 
-
+    @IsBoolean()
+    estatus: boolean;
 }
-
-
