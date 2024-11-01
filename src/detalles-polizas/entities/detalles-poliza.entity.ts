@@ -7,19 +7,19 @@ export class DetallesPoliza {
     @PrimaryGeneratedColumn()
   id_detalle: number;
 
-  @Column({ type: 'char', length: 4 })
+  @Column({ type: 'char', length: 4})
   codigo_cuenta: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100})
   nombre_cuenta: string;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  @Column({ type: 'decimal', precision: 15, scale: 2})
   monto_debito: number;
 
-  @Column({ type: 'decimal', precision: 15, scale: 2 })
+  @Column({ type: 'decimal', precision: 15, scale: 2})
   monto_credito: number;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true})
   descripcion: string;
 
   @CreateDateColumn()
@@ -28,16 +28,16 @@ export class DetallesPoliza {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   created_by: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   updated_by: string;
 
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: true})
   estatus: boolean;
 
   // Relaciones

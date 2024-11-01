@@ -10,10 +10,10 @@ export class DomiciliosPersona {
     @PrimaryGeneratedColumn()
     id_domicilio: number;
 
-    @Column({ type: 'varchar', length: 150 })
+    @Column({ type: 'varchar', length: 150})
     calle: string;
 
-    @Column({ type: 'varchar', length: 10 })
+    @Column({ type: 'varchar', length: 10})
     numero_exterior: string;
 
     @Column({ type: 'varchar', length: 10, nullable: true })
@@ -25,10 +25,10 @@ export class DomiciliosPersona {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()

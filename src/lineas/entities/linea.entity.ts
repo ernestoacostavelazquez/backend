@@ -7,7 +7,7 @@ export class Linea {
     id_linea:number;
 
     @Column()
-    descripcion:string;
+    nombre:string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -15,10 +15,10 @@ export class Linea {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()

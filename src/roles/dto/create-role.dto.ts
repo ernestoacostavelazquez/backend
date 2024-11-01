@@ -8,6 +8,10 @@ export class CreateRoleDto {
     nombre_rol: string;
 
     @IsOptional()
+    @IsString()
+    descripcion?: string;
+
+    @IsOptional()
     @Type(() => Date)
     created_at?: Date;
 

@@ -6,10 +6,10 @@ export class UnidadMedida {
   @PrimaryGeneratedColumn()
   id_unidad: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50})
   nombre: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true})
   descripcion: string;
   
   @CreateDateColumn()
@@ -18,16 +18,16 @@ export class UnidadMedida {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   created_by: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   updated_by: string;
 
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: true})
   estatus: boolean;
 
   @OneToMany(() => MaestroParte, parte => parte.unidad_medida)

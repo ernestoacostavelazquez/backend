@@ -30,6 +30,7 @@ import { PersonasFisicasModule } from './personas_fisicas/personas_fisicas.modul
 import { PersonasMoralesModule } from './personas_morales/personas_morales.module';
 import { GenerosCuentasContablesModule } from './generos_cuentas_contables/generos_cuentas_contables.module';
 import { GruposGenerosCuentasModule } from './grupos_generos_cuentas/grupos_generos_cuentas.module';
+import { PaisesModule } from './paises/paises.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { GruposGenerosCuentasModule } from './grupos_generos_cuentas/grupos_gene
     PersonasMoralesModule,
     GenerosCuentasContablesModule,
     GruposGenerosCuentasModule,
+    PaisesModule,
     ],
   controllers: [AppController],
   providers: [AppService],

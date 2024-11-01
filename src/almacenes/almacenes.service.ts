@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlmaceneDto } from './dto/create-almacene.dto';
 import { UpdateAlmaceneDto } from './dto/update-almacene.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,41 +13,96 @@ export class AlmacenesService {
     private almacenesRepository: Repository<Almacen>,
   ) {}
 
-  async create(createAlmacenDto: CreateAlmaceneDto): Promise<Almacen> {
+  async create(createAlmacenDto: CreateAlmaceneDto): Promise<{message:string, result:boolean, data:Almacen}> {
+    // Verificar si el nombre del almacén ya existe
+    const almacenFound = await this.almacenesRepository.findOne({
+      where: {
+        nombre: createAlmacenDto.nombre
+      }
+    });
+
+    if (almacenFound) {
+      // Si el almacén ya existe, retornar la información del mismo
+      return {
+        message: 'Almacen ya existe',
+        result:false,
+        data:null
+      }
+    }
+
     const nuevoAlmacen = this.almacenesRepository.create(createAlmacenDto);
-    return await this.almacenesRepository.save(nuevoAlmacen);
-  }
+    const almacenCreado =  await this.almacenesRepository.save(nuevoAlmacen);
 
-  async findAll(): Promise<Almacen[]> {
-    return await this.almacenesRepository.find();
-  }
-
-  async findOne(id: number): Promise<Almacen> {
-    // Validar que el ID existe
-    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
-    if (!almacen) {
-      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
+    return{
+      message:'Almacen creado con éxito',
+      result: true,
+      data: almacenCreado
     }
-    return almacen;
   }
 
-  async update(id: number, updateAlmacenDto: UpdateAlmaceneDto): Promise<void> {
-    // Validar que el ID existe
-    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
-    if (!almacen) {
-      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
-    }
+  async findAll(): Promise<{ message: string, result: boolean, data: Almacen[] }> {
+    const almacenes = await this.almacenesRepository.find();
     
-    await this.almacenesRepository.update(id, updateAlmacenDto);
+    return {
+      message: "Listado de almacenes recuperado con éxito",
+      result: true,
+      data: almacenes
+    };
   }
 
-  async remove(id: number): Promise<void> {
-    // Validar que el ID existe
-    const almacen = await this.almacenesRepository.findOneBy({ id_almacen: id });
-    if (!almacen) {
-      throw new NotFoundException(`Almacén con ID ${id} no encontrado`);
+  async findOne(id: number): Promise<{ message: string, result: boolean, data: Almacen }> {
+    const almacenFound = await this.almacenesRepository.findOneBy({ id_almacen: id });
+
+    if (!almacenFound) {
+      return {
+        message: 'Alamacen no Existe',
+        result:false,
+        data: null
+      }
+
     }
 
-    await this.almacenesRepository.softDelete(id);
+    return {
+      message: `Almacén con ID ${id} recuperado con éxito`,
+      result: true,
+      data: almacenFound
+    };
+  }
+
+  async update(id: number, updateAlmacenDto: UpdateAlmaceneDto): Promise<{ message: string, result: boolean, data: Almacen }> {
+    const almacenFound = await this.almacenesRepository.findOneBy({ id_almacen: id });
+
+    if (!almacenFound) {
+      return{
+        message:'Almacen no Existe',
+        result: false,
+        data:null
+      }
+    }
+
+    const updatedAlmacen = Object.assign(almacenFound, updateAlmacenDto);
+    await this.almacenesRepository.save(updatedAlmacen);
+    
+    return {
+      message: `Almacén con ID ${id} actualizado con éxito`,
+      result: true,
+      data: updatedAlmacen
+    };
+  }
+
+  async remove(id: number): Promise<{ message: string, result: boolean }> {
+    const result = await this.almacenesRepository.softDelete({ id_almacen: id });
+
+    if (result.affected === 0) {
+      return{
+        message:'Almacen no Existe',
+        result:false
+      }
+    }
+
+    return {
+      message: `Almacén con ID ${id} eliminado con éxito`,
+      result: true
+    };
   }
 }

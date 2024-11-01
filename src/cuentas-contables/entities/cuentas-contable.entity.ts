@@ -8,10 +8,10 @@ export class CuentasContable {
   @PrimaryGeneratedColumn()
   id_cuenta: number;
 
-  @Column({ type: 'char', length: 25 })
+  @Column({ type: 'char', length: 25})
   codigo_cuenta: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100})
   nombre_cuenta: string;
 
   @Column({ type: 'enum', enum: ['Deudora', 'Acreedora', 'No Aplica'] })
@@ -26,16 +26,16 @@ export class CuentasContable {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   created_by: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   updated_by: string;
 
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: 'boolean'})
+  @Column({ type: 'boolean', default: true})
   estatus: boolean;
 
    // Relaciones

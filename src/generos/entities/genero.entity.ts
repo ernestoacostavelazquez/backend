@@ -6,8 +6,11 @@ export class Genero {
     @PrimaryGeneratedColumn()
     id_genero: number;
   
-    @Column({ type: 'varchar', length: 50 })
+    @Column({ type: 'varchar', length: 50})
     nombre_genero: string;
+    
+    @Column({ type: 'varchar', length: 100, nullable: true })
+    descripcion: string;
 
     @CreateDateColumn()
     created_at: Date;

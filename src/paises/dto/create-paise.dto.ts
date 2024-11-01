@@ -1,12 +1,17 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
+// create-pais.dto.ts
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateLineaDto {
-    
+export class CreatePaisDto {
     @IsString()
     @IsNotEmpty()
-    nombre:string;
-   
+    nombre: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @Length(2, 2)
+    codigo_iso_alpha2: string;
+
     @IsOptional()
     @Type(() => Date)
     created_at?: Date;
@@ -25,6 +30,4 @@ export class CreateLineaDto {
 
     @IsBoolean()
     estatus: boolean;
-
-    
 }

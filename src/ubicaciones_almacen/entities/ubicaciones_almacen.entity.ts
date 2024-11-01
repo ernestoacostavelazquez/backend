@@ -6,10 +6,10 @@ export class UbicacionesAlmacen {
     @PrimaryGeneratedColumn()
     id_ubicacion: number;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100})
     nombre: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'text', nullable: true})
     descripcion: string;
 
     @CreateDateColumn()
@@ -18,16 +18,16 @@ export class UbicacionesAlmacen {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @ManyToOne(() => Almacen, almacen => almacen.ubicaciones_almacen)

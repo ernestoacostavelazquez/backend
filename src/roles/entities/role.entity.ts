@@ -6,8 +6,11 @@ export class Rol {
     @PrimaryGeneratedColumn()
     id_rol: number;
 
-    @Column({ type: 'varchar', length: 50 })
+    @Column({ type: 'varchar', length: 50})
     nombre_rol: string;
+
+    @Column({ type: 'varchar', length: 100, nullable: true })
+    descripcion: string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -15,16 +18,16 @@ export class Rol {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @OneToMany(() => RolesPersona, rolPersona => rolPersona.rol)

@@ -7,13 +7,13 @@ export class TiposPoliza {
   @PrimaryGeneratedColumn()
   id_tipo_poliza: number;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50})
   nombre_tipo_poliza: string;
 
-  @Column({ type: 'varchar', length: 5 })
+  @Column({ type: 'varchar', length: 5})
   abreviatura: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true})
   descripcion: string;
 
   @CreateDateColumn()
@@ -22,16 +22,16 @@ export class TiposPoliza {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   created_by: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   updated_by: string;
 
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: true})
   estatus: boolean;
 
   // Relaciones

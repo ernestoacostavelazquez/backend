@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, DeleteDateColumn } from 'typeorm';
 import { MaestroPersona } from 'src/maestro_personas/entities/maestro_persona.entity';
 import { Rol } from 'src/roles/entities/role.entity';
 
@@ -17,13 +17,16 @@ export class RolesPersona {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
-    @Column({ type: 'boolean', default: true })
+    @DeleteDateColumn()
+    deletedAt: Date;
+
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @ManyToOne(() => MaestroPersona, persona => persona.roles)

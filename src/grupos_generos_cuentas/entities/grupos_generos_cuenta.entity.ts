@@ -8,7 +8,7 @@ export class GruposGenerosCuenta {
     @PrimaryGeneratedColumn()
     id_grupo_genero: number;
   
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100})
     nombre_grupo: string;
 
     @Column({ type: 'int' })
@@ -29,10 +29,8 @@ export class GruposGenerosCuenta {
     @DeleteDateColumn()
     deletedAt: Date;
 
-  
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
-
      // Relación ManyToOne con GenerosCuentasContable
     @ManyToOne(() => GenerosCuentasContable, genero => genero.gruposGeneros)
     @JoinColumn({ name: 'id_genero_cuenta' })  // Clave foránea

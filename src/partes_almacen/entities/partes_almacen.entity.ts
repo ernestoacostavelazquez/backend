@@ -7,10 +7,10 @@ export class PartesAlmacen {
     @PrimaryGeneratedColumn()
     id_parte_almacen: number;
   
-    @Column({ type: 'int', default: 0 })
+    @Column({ type: 'int', default: 0})
     stock_actual: number;
   
-    @Column({ type: 'int', default: 0 })
+    @Column({ type: 'int', default: 0})
     stock_minimo: number;
   
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
@@ -22,16 +22,16 @@ export class PartesAlmacen {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @ManyToOne(() => MaestroParte, parte => parte.partes_almacen)

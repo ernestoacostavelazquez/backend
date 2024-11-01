@@ -22,16 +22,16 @@ export class MaestroPersona {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @OneToOne(() => PersonasFisica)

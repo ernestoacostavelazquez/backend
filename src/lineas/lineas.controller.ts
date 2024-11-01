@@ -5,7 +5,7 @@ import { UpdateLineaDto } from './dto/update-linea.dto';
 import { ApiTags} from '@nestjs/swagger';
 
 @ApiTags('Lineas')
-@Controller('lineas')
+@Controller('Lineas')
 export class LineasController {
   constructor(private readonly lineasService: LineasService) {}
 

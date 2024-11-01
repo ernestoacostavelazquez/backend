@@ -6,10 +6,10 @@ export class PersonasMorales {
     @PrimaryGeneratedColumn()
     id_persona_morales: number;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100})
     razon_social: string;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100})
     nombre_comercial: string;
 
     @CreateDateColumn()
@@ -18,16 +18,16 @@ export class PersonasMorales {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     // Relación uno a uno con la tabla maestro_personas

@@ -7,6 +7,10 @@ export class CreateGeneroDto {
     nombre_genero: string;
 
     @IsOptional()
+    @IsString()
+    descripcion?: string;
+
+    @IsOptional()
     @Type(() => Date)
     created_at?: Date;
 

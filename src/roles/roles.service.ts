@@ -13,44 +13,91 @@ export class RolesService {
     private readonly rolesRepository: Repository<Rol>,
   ) {}
 
-  async create(createRolDto: CreateRoleDto): Promise<Rol> {
+  async create(createRolDto: CreateRoleDto): Promise<{ message: string, result: boolean, data: Rol }> {
     const rolExists = await this.rolesRepository.findOne({ where: { nombre_rol: createRolDto.nombre_rol } });
 
     if (rolExists) {
-      throw new HttpException('El rol ya existe', HttpStatus.CONFLICT);
+      // Si el rol ya existe, retorna un mensaje adecuado
+      return {
+        message: 'El rol ya existe',
+        result: false,
+        data: null
+      };
     }
 
     const newRol = this.rolesRepository.create(createRolDto);
-    return this.rolesRepository.save(newRol);
+    const savedRol = await this.rolesRepository.save(newRol);
+
+    return {
+      message: 'Rol creado con éxito',
+      result: true,
+      data: savedRol
+    };
   }
 
-  async findAll(): Promise<Rol[]> {
-    return this.rolesRepository.find();
+  async findAll(): Promise<{ message: string, result: boolean, data: Rol[] }> {
+    const roles = await this.rolesRepository.find();
+    return {
+      message: "Listado de roles recuperado con éxito",
+      result: true,
+      data: roles
+    };
   }
 
-  async findOne(id: number): Promise<Rol> {
+  async findOne(id: number): Promise<{ message: string, result: boolean, data: Rol }> {
     const rol = await this.rolesRepository.findOne({ where: { id_rol: id } });
+
     if (!rol) {
-      throw new NotFoundException(`Rol con ID ${id} no encontrado`);
+      return {
+        message: `Rol con ID ${id} no encontrado`,
+        result: false,
+        data: null
+      };
     }
-    return rol;
+
+    return {
+      message: `Rol con ID ${id} recuperado con éxito`,
+      result: true,
+      data: rol
+    };
   }
 
-  async update(id: number, updateRolDto: UpdateRoleDto): Promise<void> {
-    const result = await this.rolesRepository.update(id, updateRolDto);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Rol con ID ${id} no encontrado`);
-    }
-  }
-
-  async remove(id: number): Promise<void> {
-    // Verificar si el rol existe antes de eliminar
+  async update(id: number, updateRolDto: UpdateRoleDto): Promise<{ message: string, result: boolean, data: Rol }> {
     const rol = await this.rolesRepository.findOne({ where: { id_rol: id } });
+
     if (!rol) {
-      throw new NotFoundException(`Rol con ID ${id} no encontrado`);
+      return {
+        message: `Rol con ID ${id} no encontrado`,
+        result: false,
+        data: null
+      };
+    }
+
+    const updatedRol = Object.assign(rol, updateRolDto);
+    await this.rolesRepository.save(updatedRol);
+
+    return {
+      message: `Rol con ID ${id} actualizado con éxito`,
+      result: true,
+      data: updatedRol
+    };
+  }
+
+  async remove(id: number): Promise<{ message: string, result: boolean }> {
+    const rol = await this.rolesRepository.findOne({ where: { id_rol: id } });
+
+    if (!rol) {
+      return {
+        message: `Rol con ID ${id} no encontrado`,
+        result: false
+      };
     }
 
     await this.rolesRepository.softDelete(id);
+
+    return {
+      message: `Rol con ID ${id} eliminado con éxito`,
+      result: true
+    };
   }
- 
 }

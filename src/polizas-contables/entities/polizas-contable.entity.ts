@@ -7,20 +7,21 @@ export class PolizasContable {
   @PrimaryGeneratedColumn()
   id_poliza: number;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar', length: 20})
   numero_poliza: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date'})
   fecha_poliza: Date;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text'})
   descripcion: string;
 
-  @Column({ type: 'enum', enum: ['Pendiente', 'Aprobada', 'Cancelada'] })
+  @Column({ type: 'enum', enum: ['Pendiente', 'Aprobada', 'Cancelada']})
   estado: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true})
   referencia_documento: string;
+  
   @CreateDateColumn()
   created_at: Date;
 
@@ -30,13 +31,13 @@ export class PolizasContable {
   @Column({ nullable: true })
   created_by: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true})
   updated_by: string;
 
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ type: 'boolean', default: true})
   estatus: boolean;
 
   // Relaciones

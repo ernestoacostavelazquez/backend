@@ -22,13 +22,13 @@ export class GenerosCuentasContable {
     @Column({ nullable: true })
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
      // Relación OneToMany con GruposGenerosCuenta

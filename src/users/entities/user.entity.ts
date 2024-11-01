@@ -7,7 +7,7 @@ export class User {
     id_user:number;
 
     @Column()
-    username:string;
+    nombre_completo:string;
 
     @Column({unique:true,nullable:false})
     email:string;
@@ -24,13 +24,16 @@ export class User {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
+
+    @Column({ type: 'boolean', default: true})
+    estatus: boolean;
 
 }

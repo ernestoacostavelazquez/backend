@@ -6,7 +6,7 @@ export class TiposDomicilio {
     @PrimaryGeneratedColumn()
     id_tipo_domicilio: number;
 
-    @Column({ type: 'varchar', length: 50 })
+    @Column({ type: 'varchar', length: 50})
     nombre_tipo_domicilio: string;
 
     @CreateDateColumn()
@@ -15,16 +15,16 @@ export class TiposDomicilio {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     created_by: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true})
     updated_by: string;
 
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'boolean', default: true})
     estatus: boolean;
 
     @OneToMany(() => DomiciliosPersona, domicilio => domicilio.tipo_domicilio)

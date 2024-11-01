@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 import { Type } from 'class-transformer';
 
 export class CreateUserDto {
     
     @IsString()
     @IsNotEmpty()
-    username:string;
+    nombre_completo:string;
 
     @IsString()
     @IsNotEmpty()
@@ -34,4 +34,7 @@ export class CreateUserDto {
     @IsOptional()
     @IsString()
     updated_by?: string;
+
+    @IsBoolean()
+    estatus: boolean;
 }

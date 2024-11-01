@@ -53,7 +53,6 @@ export class MaestroParte {
 
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
-
     @OneToMany(() => PartesAlmacen, parteAlmacen => parteAlmacen.parte)
     partes_almacen: PartesAlmacen[];
 
