@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body,Param, Delete, Put } from '@nestjs/common';
 import { GenerosService } from './generos.service';
 import { CreateGeneroDto } from './dto/create-genero.dto';
 import { UpdateGeneroDto } from './dto/update-genero.dto';
@@ -24,7 +24,7 @@ export class GenerosController {
     return this.generosService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateGeneroDto: UpdateGeneroDto) {
     return this.generosService.update(+id, updateGeneroDto);
   }

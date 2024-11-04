@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { UnidadMedidaService } from './unidad_medida.service';
 import { CreateUnidadMedidaDto } from './dto/create-unidad_medida.dto';
 import { UpdateUnidadMedidaDto } from './dto/update-unidad_medida.dto';
 import { ApiTags} from '@nestjs/swagger';
 
 @ApiTags('UnidadMedida')
-@Controller('UbidadMedida')
+@Controller('UnidadMedida')
 export class UnidadMedidaController {
   constructor(private readonly unidadMedidaService: UnidadMedidaService) {}
 
@@ -24,7 +24,7 @@ export class UnidadMedidaController {
     return this.unidadMedidaService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUnidadMedidaDto: UpdateUnidadMedidaDto) {
     return this.unidadMedidaService.update(+id, updateUnidadMedidaDto);
   }

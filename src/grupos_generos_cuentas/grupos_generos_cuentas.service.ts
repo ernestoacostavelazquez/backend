@@ -13,87 +13,120 @@ export class GruposGenerosCuentasService {
     private readonly gruposGenerosCuentasRepository: Repository<GruposGenerosCuenta>,
 
     @InjectRepository(GenerosCuentasContable)
-    private readonly generosCuentasContablesRepository: Repository<GenerosCuentasContable>,  // Repositorio para GenerosCuentasContable
+    private readonly generosCuentasContablesRepository: Repository<GenerosCuentasContable>,
   ) {}
 
-  async create(createGruposGenerosCuentaDto: CreateGruposGenerosCuentaDto): Promise<GruposGenerosCuenta> {
+  async create(createGruposGenerosCuentaDto: CreateGruposGenerosCuentaDto): Promise<{ message: string; result: boolean; data: GruposGenerosCuenta | null }> {
     const { id_genero_cuenta, ...rest } = createGruposGenerosCuentaDto;
 
-    // Verificar si el grupo de género de cuenta contable ya existe
     const grupoGeneroExists = await this.gruposGenerosCuentasRepository.findOne({
       where: { codigo_grupo: createGruposGenerosCuentaDto.codigo_grupo },
     });
 
     if (grupoGeneroExists) {
-      throw new HttpException('El grupo de género de cuenta contable ya existe', HttpStatus.CONFLICT);
+      return {
+        message: 'El grupo de género de cuenta contable ya existe',
+        result: false,
+        data: null,
+      };
     }
 
-    // Verificar si el género de cuenta contable existe
     const genero = await this.generosCuentasContablesRepository.findOne({ where: { id_genero_cuenta } });
     if (!genero) {
       throw new NotFoundException('Género de cuenta contable no encontrado');
     }
 
-    // Crear el nuevo grupo y asociar el género de cuenta contable
     const newGrupoGenero = this.gruposGenerosCuentasRepository.create({
       ...rest,
-      genero: genero,  // Asociar el género de cuenta contable
+      genero,
     });
+    const grupoGeneroCreado = await this.gruposGenerosCuentasRepository.save(newGrupoGenero);
 
-    return this.gruposGenerosCuentasRepository.save(newGrupoGenero);
+    return {
+      message: 'Grupo de género de cuenta contable creado con éxito',
+      result: true,
+      data: grupoGeneroCreado,
+    };
   }
 
-  async findAll(): Promise<GruposGenerosCuenta[]> {
-    return this.gruposGenerosCuentasRepository.find({
-      relations: ['genero'],  // Incluir la relación con el género
+  async findAll(): Promise<{ message: string; result: boolean; data: GruposGenerosCuenta[] }> {
+    const gruposGeneros = await this.gruposGenerosCuentasRepository.find({
+      relations: ['genero'],
     });
+    return {
+      message: 'Listado de grupos de géneros de cuentas contables recuperado con éxito',
+      result: true,
+      data: gruposGeneros,
+    };
   }
 
-  async findOne(id: number): Promise<GruposGenerosCuenta> {
+  async findOne(id: number): Promise<{ message: string; result: boolean; data: GruposGenerosCuenta | null }> {
     const grupoGenero = await this.gruposGenerosCuentasRepository.findOne({
       where: { id_grupo_genero: id },
-      relations: ['genero'],  // Incluir la relación con el género
+      relations: ['genero'],
     });
     if (!grupoGenero) {
-      throw new NotFoundException(`Grupo de género de cuenta con ID ${id} no encontrado`);
+      return {
+        message: `Grupo de género de cuenta con ID ${id} no encontrado`,
+        result: false,
+        data: null,
+      };
     }
-    return grupoGenero;
+    return {
+      message: `Grupo de género de cuenta con ID ${id} recuperado con éxito`,
+      result: true,
+      data: grupoGenero,
+    };
   }
 
-  async update(id: number, updateGruposGenerosCuentaDto: UpdateGruposGenerosCuentaDto): Promise<void> {
+  async update(id: number, updateGruposGenerosCuentaDto: UpdateGruposGenerosCuentaDto): Promise<{ message: string; result: boolean; data: GruposGenerosCuenta | null }> {
     const { id_genero_cuenta, ...rest } = updateGruposGenerosCuentaDto;
 
-    // Buscar el grupo de género existente
     const grupoGenero = await this.gruposGenerosCuentasRepository.findOne({
       where: { id_grupo_genero: id },
       relations: ['genero'],
     });
 
     if (!grupoGenero) {
-      throw new NotFoundException(`Grupo de género de cuenta con ID ${id} no encontrado`);
+      return {
+        message: `Grupo de género de cuenta con ID ${id} no encontrado`,
+        result: false,
+        data: null,
+      };
     }
 
-    // Verificar si se necesita actualizar el género de cuenta contable
     if (id_genero_cuenta) {
       const genero = await this.generosCuentasContablesRepository.findOne({ where: { id_genero_cuenta } });
       if (!genero) {
         throw new NotFoundException('Género de cuenta contable no encontrado');
       }
-      grupoGenero.genero = genero;  // Actualizar la relación con el género
+      grupoGenero.genero = genero;
     }
 
-    // Actualizar el resto de los campos
     Object.assign(grupoGenero, rest);
+    const grupoGeneroActualizado = await this.gruposGenerosCuentasRepository.save(grupoGenero);
 
-    await this.gruposGenerosCuentasRepository.save(grupoGenero);
+    return {
+      message: `Grupo de género de cuenta con ID ${id} actualizado con éxito`,
+      result: true,
+      data: grupoGeneroActualizado,
+    };
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<{ message: string; result: boolean }> {
     const grupoGenero = await this.gruposGenerosCuentasRepository.findOne({ where: { id_grupo_genero: id } });
     if (!grupoGenero) {
-      throw new NotFoundException(`Grupo de género de cuenta con ID ${id} no encontrado`);
+      return {
+        message: `Grupo de género de cuenta con ID ${id} no encontrado`,
+        result: false,
+      };
     }
 
     await this.gruposGenerosCuentasRepository.softDelete(id);
+
+    return {
+      message: `Grupo de género de cuenta con ID ${id} eliminado con éxito`,
+      result: true,
+    };
   }
 }

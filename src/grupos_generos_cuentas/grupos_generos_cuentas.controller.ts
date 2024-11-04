@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { GruposGenerosCuentasService } from './grupos_generos_cuentas.service';
 import { CreateGruposGenerosCuentaDto } from './dto/create-grupos_generos_cuenta.dto';
 import { UpdateGruposGenerosCuentaDto } from './dto/update-grupos_generos_cuenta.dto';
 import { ApiTags} from '@nestjs/swagger';
 
-@ApiTags('GrupoGenerosCuentas')
+@ApiTags('GruposGenerosCuentas')
 @Controller('GruposGenerosCuentas')
 export class GruposGenerosCuentasController {
   constructor(private readonly gruposGenerosCuentasService: GruposGenerosCuentasService) {}
@@ -24,7 +24,7 @@ export class GruposGenerosCuentasController {
     return this.gruposGenerosCuentasService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateGruposGenerosCuentaDto: UpdateGruposGenerosCuentaDto) {
     return this.gruposGenerosCuentasService.update(+id, updateGruposGenerosCuentaDto);
   }

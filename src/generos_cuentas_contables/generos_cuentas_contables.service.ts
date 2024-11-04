@@ -13,53 +13,95 @@ export class GenerosCuentasContablesService {
     private readonly generosCuentasContablesRepository: Repository<GenerosCuentasContable>,
   ) {}
 
-  async create(createGenerosCuentasContableDto: CreateGenerosCuentasContableDto): Promise<GenerosCuentasContable> {
+  async create(createGenerosCuentasContableDto: CreateGenerosCuentasContableDto): Promise<{ message: string; result: boolean; data: GenerosCuentasContable | null }> {
     const generoCuentaExists = await this.generosCuentasContablesRepository.findOne({
       where: { codigo_genero: createGenerosCuentasContableDto.codigo_genero },
     });
 
     if (generoCuentaExists) {
-      throw new HttpException('El género de cuenta contable ya existe', HttpStatus.CONFLICT);
+      return {
+        message: 'El género de cuenta contable ya existe',
+        result: false,
+        data: null,
+      };
     }
 
     const newGeneroCuenta = this.generosCuentasContablesRepository.create(createGenerosCuentasContableDto);
-    return this.generosCuentasContablesRepository.save(newGeneroCuenta);
+    const generoCuentaCreada = await this.generosCuentasContablesRepository.save(newGeneroCuenta);
+
+    return {
+      message: 'Género de cuenta contable creado con éxito',
+      result: true,
+      data: generoCuentaCreada,
+    };
   }
 
-  // Modificación para incluir la relación con grupos_generos_cuentas
-  async findAll(): Promise<GenerosCuentasContable[]> {
-    return this.generosCuentasContablesRepository.find({
-      relations: ['gruposGeneros'],  // Incluir la relación con grupos_generos_cuentas
-    });
+  async findAll(): Promise<{ message: string; result: boolean; data: GenerosCuentasContable[] }> {
+    const generosCuentas = await this.generosCuentasContablesRepository.find({ relations: ['gruposGeneros'] });
+    return {
+      message: 'Listado de géneros de cuentas contables recuperado con éxito',
+      result: true,
+      data: generosCuentas,
+    };
   }
 
-  // Modificación para incluir la relación con grupos_generos_cuentas
-  async findOne(id: number): Promise<GenerosCuentasContable> {
+  async findOne(id: number): Promise<{ message: string; result: boolean; data: GenerosCuentasContable | null }> {
     const generoCuenta = await this.generosCuentasContablesRepository.findOne({
       where: { id_genero_cuenta: id },
-      relations: ['gruposGeneros'],  // Incluir la relación con grupos_generos_cuentas
+      relations: ['gruposGeneros'],
     });
 
     if (!generoCuenta) {
-      throw new NotFoundException(`Género de cuenta contable con ID ${id} no encontrado`);
+      return {
+        message: `Género de cuenta contable con ID ${id} no encontrado`,
+        result: false,
+        data: null,
+      };
     }
+
+    return {
+      message: `Género de cuenta contable con ID ${id} recuperado con éxito`,
+      result: true,
+      data: generoCuenta,
+    };
+  }
+
+  async update(id: number, updateGenerosCuentasContableDto: UpdateGenerosCuentasContableDto): Promise<{ message: string; result: boolean; data: GenerosCuentasContable | null }> {
+    const generoCuentaExist = await this.generosCuentasContablesRepository.findOne({ where: { id_genero_cuenta: id } });
     
-    return generoCuenta;
-  }
-
-  async update(id: number, updateGenerosCuentasContableDto: UpdateGenerosCuentasContableDto): Promise<void> {
-    const result = await this.generosCuentasContablesRepository.update(id, updateGenerosCuentasContableDto);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Género de cuenta contable con ID ${id} no encontrado`);
+    if (!generoCuentaExist) {
+      return {
+        message: `Género de cuenta contable con ID ${id} no encontrado`,
+        result: false,
+        data: null,
+      };
     }
+
+    const updatedGeneroCuenta = Object.assign(generoCuentaExist, updateGenerosCuentasContableDto);
+    await this.generosCuentasContablesRepository.save(updatedGeneroCuenta);
+
+    return {
+      message: `Género de cuenta contable con ID ${id} actualizado con éxito`,
+      result: true,
+      data: updatedGeneroCuenta,
+    };
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(id: number): Promise<{ message: string; result: boolean }> {
     const generoCuenta = await this.generosCuentasContablesRepository.findOne({ where: { id_genero_cuenta: id } });
     if (!generoCuenta) {
-      throw new NotFoundException(`Género de cuenta contable con ID ${id} no encontrado`);
+      return {
+        message: `Género de cuenta contable con ID ${id} no encontrado`,
+        result: false,
+      };
     }
 
     await this.generosCuentasContablesRepository.softDelete(id);
+
+    return {
+      message: `Género de cuenta contable con ID ${id} eliminado con éxito`,
+      result: true,
+    };
   }
+ 
 }

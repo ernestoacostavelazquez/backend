@@ -13,41 +13,93 @@ export class CategoriasService {
     private categoriasRepository: Repository<Categoria>,
   ) {}
 
-  async create(createCategoriaDto: CreateCategoriaDto): Promise<Categoria> {
-    const categoria = this.categoriasRepository.create(createCategoriaDto);
-    return this.categoriasRepository.save(categoria);
-  }
+  async create(createCategoriaDto: CreateCategoriaDto): Promise<{ message: string; result: boolean; data: Categoria | null }> {
+    // Verificar si la categoría ya existe
+    const categoriaExist = await this.categoriasRepository.findOne({
+      where: { nombre: createCategoriaDto.nombre },
+    });
 
-  async findAll(): Promise<Categoria[]> {
-    return this.categoriasRepository.find();
-  }
-
-  async findOne(id: number): Promise<Categoria> {
-    // Verificar si la categoría existe
-    const categoria = await this.categoriasRepository.findOneBy({ id_categoria: id });
-    if (!categoria) {
-      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
-    }
-    return categoria;
-  }
-
-  async update(id: number, updateCategoriaDto: UpdateCategoriaDto): Promise<void> {
-    // Verificar si la categoría existe antes de actualizar
-    const categoria = await this.categoriasRepository.findOneBy({ id_categoria: id });
-    if (!categoria) {
-      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
+    if (categoriaExist) {
+      return {
+        message: 'La categoría ya existe',
+        result: false,
+        data: null,
+      };
     }
 
-    await this.categoriasRepository.update(id, updateCategoriaDto);
+    const nuevaCategoria = this.categoriasRepository.create(createCategoriaDto);
+    const categoriaCreada = await this.categoriasRepository.save(nuevaCategoria);
+
+    return {
+      message: 'Categoría creada con éxito',
+      result: true,
+      data: categoriaCreada,
+    };
   }
 
-  async remove(id: number): Promise<void> {
-    // Verificar si la categoría existe antes de eliminar
+  async findAll(): Promise<{ message: string; result: boolean; data: Categoria[] }> {
+    const categorias = await this.categoriasRepository.find();
+    return {
+      message: 'Listado de categorías recuperado con éxito',
+      result: true,
+      data: categorias,
+    };
+  }
+
+  async findOne(id: number): Promise<{ message: string; result: boolean; data: Categoria | null }> {
     const categoria = await this.categoriasRepository.findOneBy({ id_categoria: id });
+
     if (!categoria) {
-      throw new NotFoundException(`Categoría con ID ${id} no encontrada`);
+      return {
+        message: `Categoría con ID ${id} no encontrada`,
+        result: false,
+        data: null,
+      };
+    }
+
+    return {
+      message: `Categoría con ID ${id} recuperada con éxito`,
+      result: true,
+      data: categoria,
+    };
+  }
+
+  async update(id: number, updateCategoriaDto: UpdateCategoriaDto): Promise<{ message: string; result: boolean; data: Categoria | null }> {
+    const categoriaExist = await this.categoriasRepository.findOneBy({ id_categoria: id });
+
+    if (!categoriaExist) {
+      return {
+        message: `Categoría con ID ${id} no encontrada`,
+        result: false,
+        data: null,
+      };
+    }
+
+    const categoriaActualizada = Object.assign(categoriaExist, updateCategoriaDto);
+    await this.categoriasRepository.save(categoriaActualizada);
+
+    return {
+      message: `Categoría con ID ${id} actualizada con éxito`,
+      result: true,
+      data: categoriaActualizada,
+    };
+  }
+
+  async remove(id: number): Promise<{ message: string; result: boolean }> {
+    const categoria = await this.categoriasRepository.findOneBy({ id_categoria: id });
+
+    if (!categoria) {
+      return {
+        message: `Categoría con ID ${id} no encontrada`,
+        result: false,
+      };
     }
 
     await this.categoriasRepository.softDelete(id);
+
+    return {
+      message: `Categoría con ID ${id} eliminada con éxito`,
+      result: true,
+    };
   }
 }
