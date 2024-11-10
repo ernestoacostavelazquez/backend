@@ -1,3 +1,4 @@
+// grupos_generos_cuentas.service.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { GenerosCuentasContable } from 'src/generos_cuentas_contables/entities/generos_cuentas_contable.entity';
 import { CuentasContable } from 'src/cuentas-contables/entities/cuentas-contable.entity';

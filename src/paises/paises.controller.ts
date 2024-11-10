@@ -1,3 +1,4 @@
+// paises.controller.ts
 import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 import { PaisesService } from './paises.service';
 import { CreatePaisDto } from './dto/create-paise.dto';

@@ -30,12 +30,11 @@ export class PeriodosContablesService {
 
     const newPeriodo = this.periodoscontablesRepository.create(createPeriodosContableDto);
     const periodoCreado = await this.periodoscontablesRepository.save(newPeriodo);
-   
+
     return {
       message: 'Periodo contable creado con éxito',
       result: true,
       data: periodoCreado,
-      
     };
   }
 

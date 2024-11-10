@@ -1,3 +1,4 @@
+//periodos-contables-controller.ts
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { PeriodosContablesService } from './periodos-contables.service';
 import { CreatePeriodosContableDto } from './dto/create-periodos-contable.dto';

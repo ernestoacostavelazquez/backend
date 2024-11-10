@@ -1,9 +1,10 @@
+// create-grupos_generos_cuenta.dto.ts
 import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateGruposGenerosCuentaDto {
 
-    
+   
     @IsString()
     @MaxLength(100)
     nombre_grupo: string;

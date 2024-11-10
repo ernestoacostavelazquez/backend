@@ -1,3 +1,4 @@
+// cuentas-contable.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { DetallesPoliza } from 'src/detalles-polizas/entities/detalles-poliza.entity';
 import { SaldosPeriodo } from 'src/saldos-periodos/entities/saldos-periodo.entity';

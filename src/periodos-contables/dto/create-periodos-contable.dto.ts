@@ -1,19 +1,20 @@
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+// create-periodos-contable.dto.ts
+import { IsBoolean, IsDate, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from "class-validator";
 import { Type } from 'class-transformer';
 
 export class CreatePeriodosContableDto {
     @IsNotEmpty()
-    nombre_periodo: string;
-  
+    periodo: string;
+    
     @IsNotEmpty()
-    @Type(() => Date)
-    @IsDate()
-    fecha_inicio: Date;
-  
+    @IsDateString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'fecha_inicio debe estar en formato YYYY-MM-DD' })
+    fecha_inicio: string;
+
     @IsNotEmpty()
-    @Type(() => Date)
-    @IsDate()
-    fecha_fin: Date;
+    @IsDateString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'fecha_fin debe estar en formato YYYY-MM-DD' })
+    fecha_fin: string;
   
     @IsNotEmpty()
     @IsEnum(['Abierto', 'Cerrado'])

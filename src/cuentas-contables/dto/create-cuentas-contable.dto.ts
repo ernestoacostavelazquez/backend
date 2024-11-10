@@ -1,3 +1,4 @@
+// create-cuentas-contable.dto.ts
 import { IsNotEmpty, IsEnum, IsOptional, IsString, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 

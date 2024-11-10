@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { CuentasContablesService } from './cuentas-contables.service';
 import { CreateCuentasContableDto } from './dto/create-cuentas-contable.dto';
 import { UpdateCuentasContableDto } from './dto/update-cuentas-contable.dto';
@@ -24,7 +24,7 @@ export class CuentasContablesController {
     return this.cuentasContablesService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateCuentasContableDto: UpdateCuentasContableDto) {
     return this.cuentasContablesService.update(+id, updateCuentasContableDto);
   }

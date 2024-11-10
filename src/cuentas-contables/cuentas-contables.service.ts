@@ -17,51 +17,74 @@ export class CuentasContablesService {
     private gruposGenerosRepository: Repository<GruposGenerosCuenta>,  // Repositorio para GruposGenerosCuenta
   ) {}
 
-  // Función para crear una nueva cuenta contable
-  async create(createCuentasContableDto: CreateCuentasContableDto) {
-    const { id_grupo_genero, ...rest } = createCuentasContableDto;
+  
 
-    // Verificar si el grupo de género de cuenta existe
-    const grupoGenero = await this.gruposGenerosRepository.findOne({
-      where: { id_grupo_genero },
-    });
+  // Crear nueva cuenta contable con validación de existencia
+  async create(createCuentasContableDto: CreateCuentasContableDto): Promise<{ message: string; result: boolean; data: CuentasContable }> {
+    const { id_grupo_genero, codigo_cuenta } = createCuentasContableDto;
 
-    if (!grupoGenero) {
-      throw new HttpException('Grupo de género no encontrado', HttpStatus.NOT_FOUND);
+    // Verificar si el código de cuenta ya existe
+    const cuentaExistente = await this.cuentascontableRepository.findOne({ where: { codigo_cuenta } });
+    if (cuentaExistente) {
+      return {
+        message:'La cuenta contable ya existe' ,
+        result: false,
+        data: null,
+      };
     }
 
-    // Crear la cuenta contable y asociarla con la subdivisión y el grupo de género
-    const newCuenta = this.cuentascontableRepository.create({
-      ...rest,
-      grupoGenero,  // Relación con el grupo de género
-    });
+    // Verificar si el grupo de género de cuenta existe
+    const grupoGenero = await this.gruposGenerosRepository.findOne({ where: { id_grupo_genero } });
+    if (!grupoGenero) {
+      return {
+        message: 'Grupo de género no encontrado',
+        result: false,
+        data: null,
+      };
+    }
 
-    return await this.cuentascontableRepository.save(newCuenta);
+    // Crear y guardar la cuenta contable
+    const newCuenta = this.cuentascontableRepository.create({ ...createCuentasContableDto, grupoGenero });
+    const cuentaCreada = await this.cuentascontableRepository.save(newCuenta);
+
+    return {
+      message: 'Cuenta contable creada con éxito',
+      result: true,
+      data: cuentaCreada,
+    };
   }
 
+
   // Función para encontrar todas las cuentas contables
-  async findAll() {
-    return await this.cuentascontableRepository.find({
-      relations: ['grupoGenero'], // Incluir la relación con subdivision y grupoGenero
-    });
+  async findAll(): Promise<{ message: string; result: boolean; data: CuentasContable[] }> {
+    const cuentas = await this.cuentascontableRepository.find({ relations: ['grupoGenero'] });
+    return {
+      message: 'Listado de cuentas contables recuperado con éxito',
+      result: true,
+      data: cuentas,
+    };
   }
 
   // Función para encontrar una cuenta contable por su ID
-  async findOne(id_cuenta: number) {
-    const cuenta = await this.cuentascontableRepository.findOne({
-      where: { id_cuenta },
-      relations: ['grupoGenero'], // Incluir la relación con subdivision y grupoGenero
-    });
-
+  async findOne(id_cuenta: number): Promise<{ message: string; result: boolean; data: CuentasContable }> {
+    const cuenta = await this.cuentascontableRepository.findOne({ where: { id_cuenta }, relations: ['grupoGenero'] });
     if (!cuenta) {
-      throw new HttpException('Cuenta no encontrada', HttpStatus.NOT_FOUND);
+      return {
+        message: `Cuenta contable con ID ${id_cuenta} no encontrada`,
+        result: false,
+        data: null,
+      };
     }
 
-    return cuenta;
+    return {
+      message: `Cuenta contable con ID ${id_cuenta} recuperada con éxito`,
+      result: true,
+      data: cuenta,
+    };
   }
 
-  // Función para actualizar una cuenta contable existente
-  async update(id_cuenta: number, updateCuentasContableDto: UpdateCuentasContableDto) {
+  // Función para actualizar una cuenta contable existente 
+  async update(id_cuenta: number, updateCuentasContableDto: UpdateCuentasContableDto): Promise<{ message: string; result: boolean; data: CuentasContable }> {
     const { id_grupo_genero, ...rest } = updateCuentasContableDto;
 
     // Buscar la cuenta existente
@@ -71,7 +94,11 @@ export class CuentasContablesService {
     });
 
     if (!cuenta) {
-      throw new HttpException('Cuenta no encontrada', HttpStatus.NOT_FOUND);
+      return {
+        message:'Cuenta no encontrada',
+        result: false,
+        data: null,
+      };
     }
 
     // Verificar si se necesita actualizar el grupo de género
@@ -81,7 +108,11 @@ export class CuentasContablesService {
       });
 
       if (!grupoGenero) {
-        throw new HttpException('Grupo de género no encontrado', HttpStatus.NOT_FOUND);
+        return {
+          message:'Grupo de género no encontrado',
+          result: false,
+          data: null,
+        };
       }
 
       cuenta.grupoGenero = grupoGenero;  // Actualizar la relación con el grupo de género
@@ -89,19 +120,35 @@ export class CuentasContablesService {
 
     Object.assign(cuenta, rest);
 
-    return await this.cuentascontableRepository.save(cuenta);
+    const cuentaActualizada = await this.cuentascontableRepository.save(cuenta);
+
+    return {
+      message: `Cuenta contable con ID ${id_cuenta} actualizada con éxito`,
+      result: true,
+      data: cuentaActualizada,
+    };
   }
 
-  // Función para eliminar una cuenta contable por su ID
-  async remove(id_cuenta: number) {
-    const cuenta = await this.cuentascontableRepository.findOne({
-      where: { id_cuenta },
-    });
 
+ 
+  
+  // Función para eliminar una cuenta contable por su ID
+  async remove(id_cuenta: number): Promise<{ message: string; result: boolean }> {
+    const cuenta = await this.cuentascontableRepository.findOne({ where: { id_cuenta } });
     if (!cuenta) {
-      throw new HttpException('Cuenta no encontrada', HttpStatus.NOT_FOUND);
+      return {
+        message: `Cuenta contable con ID ${id_cuenta} no encontrada`,
+        result: false,
+      };
     }
 
-    return await this.cuentascontableRepository.softDelete(id_cuenta);
+    await this.cuentascontableRepository.softDelete(id_cuenta);
+    return {
+      message: `Cuenta contable con ID ${id_cuenta} eliminada con éxito`,
+      result: true,
+    };
   }
+
+
+  
 }

@@ -1,3 +1,4 @@
+//periodos-contable.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
 import { SaldosPeriodo } from 'src/saldos-periodos/entities/saldos-periodo.entity';
 import { FoliosPolizasPeriodo } from 'src/folios-polizas-periodo/entities/folios-polizas-periodo.entity';
@@ -7,13 +8,13 @@ export class PeriodosContable {
     @PrimaryGeneratedColumn()
     id_periodo: number;
 
-    @Column({ type: 'varchar', length: 20})
-    nombre_periodo: string;
+    @Column({ type: 'varchar', length: 6})
+    periodo: string;
 
-    @Column({ type: 'date'})
+    @Column({ type: 'date' })
     fecha_inicio: Date;
 
-    @Column({ type: 'date'})
+    @Column({ type: 'date' })
     fecha_fin: Date;
 
     @Column({ type: 'enum', enum: ['Abierto', 'Cerrado']})
