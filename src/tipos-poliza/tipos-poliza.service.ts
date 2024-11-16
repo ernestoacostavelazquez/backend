@@ -1,3 +1,4 @@
+//tipos-poliza.service.ts
 import { Injectable } from '@nestjs/common';
 import { CreateTiposPolizaDto } from './dto/create-tipos-poliza.dto';
 import { UpdateTiposPolizaDto } from './dto/update-tipos-poliza.dto';

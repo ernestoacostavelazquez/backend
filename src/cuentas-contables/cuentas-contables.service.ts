@@ -1,3 +1,4 @@
+// cuentas-contables.service.ts
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCuentasContableDto } from './dto/create-cuentas-contable.dto';
 import { UpdateCuentasContableDto } from './dto/update-cuentas-contable.dto';

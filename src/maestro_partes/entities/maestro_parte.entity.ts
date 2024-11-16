@@ -15,16 +15,34 @@ export class MaestroParte {
     nombre_parte: string;
   
     @Column({ type: 'text', nullable: true })
-    descripcion: string;
+    descripcion_parte: string;
+
+    @Column({ type: 'decimal', precision: 15, scale: 2 })
+    costo_promedio: number;
+
+    @Column({ type: 'decimal', precision: 15, scale: 2 })
+    costo_planta: number;
   
-    @Column({ type: 'decimal', precision: 10, scale: 2 })
-    precio_unitario: number;
+    @Column({ type: 'decimal', precision: 15, scale: 2 })
+    precio_publico: number;
+
+    @Column({ type: 'decimal', precision: 15, scale: 2 })
+    precio_garantia: number;
+
+    @Column({ type: 'decimal', precision: 15, scale: 2 })
+    precio_mayorista: number;
   
-    @Column({ type: 'int', default: 0 })
-    stock_actual: number;
+    @Column({ type: 'decimal', default: 15, scale: 3 })
+    existencia: number;
   
-    @Column({ type: 'int', default: 0 })
+    @Column({ type: 'decimal', default: 15, scale: 3 })
     stock_minimo: number;
+
+    @Column({ type: 'decimal', default: 15, scale: 3 })
+    stock_maximo: number;
+
+    @Column({ type: 'decimal', default: 15, scale: 3 })
+    backorder: number;
   
     @Column({ type: 'varchar', length: 50, nullable: true })
     numero_parte_fabricante: string;
@@ -34,7 +52,10 @@ export class MaestroParte {
     fecha_alta: Date;
     
     @Column({ type: 'varchar', length: 50, nullable: true })
-    garantia: string;
+    garantia_parte: string;
+
+    @Column({ type: 'enum', enum: ['Nacional', 'Importada'] })
+    tipo_origen: string;
 
     @CreateDateColumn()
     created_at: Date;

@@ -1,3 +1,4 @@
+// create-polizas-contable.dto.ts
 import { IsNotEmpty, IsEnum, IsOptional, IsString, IsDate, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 

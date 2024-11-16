@@ -12,27 +12,55 @@ export class CreateMaestroParteDto {
   
     @IsString()
     @IsOptional()
-    descripcion?: string;
-  
+    descripcion_parte?: string;
+
     @IsNumber({ maxDecimalPlaces: 2 }, { message: 'precio_unitario is not a valid decimal number' })
-    @Min(0.01, { message: 'precio_unitario must be at least 0.01' })
-    precio_unitario: number;
+    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
+    costo_promedio: number;
+
+    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
+    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
+    costo_planta: number;
+    
+    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
+    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
+    precio_publico: number;
+
+    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
+    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
+    precio_garantia: number;
+
+    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
+    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
+    precio_mayorista: number;
   
     @IsInt()
     @IsOptional()
-    stock_actual?: number;
+    existencia?: number;
   
     @IsInt()
     @IsOptional()
     stock_minimo?: number;
+
+    @IsInt()
+    @IsOptional()
+    stock_maximo?: number;
   
+    @IsInt()
+    @IsOptional()
+    backorder?: number;
+
     @IsString()
     @IsOptional()
     numero_parte_fabricante?: string;
    
     @IsString()
     @IsOptional()
-    garantia?: string;
+    garantia_parte?: string;
+
+    @IsNotEmpty()
+    @IsEnum(['Nacional', 'Importada'])
+    tipo_origen: string;
 
     @IsOptional()
     @Type(() => Date)

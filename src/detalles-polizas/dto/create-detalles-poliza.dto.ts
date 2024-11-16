@@ -1,3 +1,4 @@
+// create-detalles-poliza.dto.ts
 import { IsNotEmpty, IsOptional, IsDecimal, IsString, IsNumber, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 

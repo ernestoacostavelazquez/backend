@@ -5,7 +5,6 @@ import { Pais } from './entities/paise.entity'
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePaisDto } from './dto/create-paise.dto';
 import { UpdatePaisDto } from './dto/update-paise.dto';
-import { FilterPaisDto} from './dto/filter-paise.dto';
 
 @Injectable()
 export class PaisesService {
@@ -47,50 +46,6 @@ export class PaisesService {
       data: paises,
     };
   }
-  
-  async filterAll(filters: {
-    nombre?: string;
-    codigo_iso_alpha2?: string;
-    sortBy: string;
-    sortOrder: 'asc' | 'desc';
-    page: number;
-    pageSize: number;
-  }) {
-    const { nombre, codigo_iso_alpha2, sortBy, sortOrder, page, pageSize } = filters;
-    
-    const query = this.paisesRepository.createQueryBuilder('pais');
-    
-    // Aplica filtros si están presentes
-    if (nombre) {
-      query.andWhere('pais.nombre LIKE :nombre', { nombre: `%${nombre}%` });
-    }
-    
-    if (codigo_iso_alpha2) {
-      query.andWhere('pais.codigo_iso_alpha2 = :codigo_iso_alpha2', { codigo_iso_alpha2 });
-    }
-
-    // Aplica el ordenamiento
-    if (['nombre', 'codigo_iso_alpha2', 'estatus'].includes(sortBy)) {
-      query.orderBy(`pais.${sortBy}`, sortOrder.toUpperCase() as 'ASC' | 'DESC');
-    }
-
-    // Calcula el offset (skip) y limit (take) para la paginación
-    const skip = (page - 1) * pageSize;
-    query.skip(skip).take(pageSize);
-
-    // Ejecuta la consulta y devuelve los resultados con el total de registros
-    const [data, total] = await query.getManyAndCount();
-    
-
-    return {
-      data,
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize),
-    };
-  }
-
 
   async findOne(id_pais: number): Promise<{ message: string; result: boolean; data: Pais }> {
     const paisFound = await this.paisesRepository.findOne({

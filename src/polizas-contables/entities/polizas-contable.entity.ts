@@ -1,3 +1,4 @@
+// polizas-contable.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { DetallesPoliza } from 'src/detalles-polizas/entities/detalles-poliza.entity';
 import { TiposPoliza } from 'src/tipos-poliza/entities/tipos-poliza.entity';

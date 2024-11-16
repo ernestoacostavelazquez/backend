@@ -1,3 +1,4 @@
+// polizas-contables.service.ts
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePolizasContableDto } from './dto/create-polizas-contable.dto';
 import { UpdatePolizasContableDto } from './dto/update-polizas-contable.dto';

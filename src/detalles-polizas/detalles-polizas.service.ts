@@ -1,3 +1,4 @@
+// detalles-polizas.service.ts
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDetallesPolizaDto } from './dto/create-detalles-poliza.dto';
 import { UpdateDetallesPolizaDto } from './dto/update-detalles-poliza.dto';
