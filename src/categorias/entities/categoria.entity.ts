@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, DeleteDateColumn } from 'typeorm';
 import { MaestroParte } from 'src/maestro_partes/entities/maestro_parte.entity';
+import { SubCategoria } from 'src/sub-categorias/entities/sub-categoria.entity';
 
 @Entity('categorias')
 export class Categoria {
@@ -7,10 +8,10 @@ export class Categoria {
   id_categoria: number;
 
   @Column({ type: 'varchar', length: 100 })
-  nombre: string;
+  nombre_categoria: string;
 
   @Column({ type: 'text', nullable: true})
-  descripcion: string;
+  descripcion_categoria: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -33,5 +34,8 @@ export class Categoria {
   @OneToMany(() => MaestroParte, parte => parte.categoria)
   maestro_partes: MaestroParte[];
   
+  // Relación OneToMany con SubCategorias
+  @OneToMany(() => SubCategoria, subCategoria => subCategoria.categoria)
+  subCategoria: SubCategoria[];
 
 }

@@ -5,11 +5,11 @@ export class CreateCategoriaDto {
 
     @IsNotEmpty()
     @IsString()
-    nombre: string;
+    nombre_categoria: string;
 
     @IsOptional()
     @IsString()
-    descripcion?: string;
+    descripcion_categoria?: string;
 
     @IsOptional()
     @Type(() => Date)

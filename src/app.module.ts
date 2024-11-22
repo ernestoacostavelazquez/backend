@@ -31,6 +31,21 @@ import { PersonasMoralesModule } from './personas_morales/personas_morales.modul
 import { GenerosCuentasContablesModule } from './generos_cuentas_contables/generos_cuentas_contables.module';
 import { GruposGenerosCuentasModule } from './grupos_generos_cuentas/grupos_generos_cuentas.module';
 import { PaisesModule } from './paises/paises.module';
+import { ColoresInterioresModule } from './colores-interiores/colores-interiores.module';
+import { ColoresExterioresModule } from './colores-exteriores/colores-exteriores.module';
+import { SubCategoriasModule } from './sub-categorias/sub-categorias.module';
+import { ColoresModule } from './colores/colores.module';
+import { TiposCajaModule } from './tipos_caja/tipos_caja.module';
+import { BancosModule } from './bancos/bancos.module';
+import { CarterasModule } from './carteras/carteras.module';
+import { CombustiblesModule } from './combustibles/combustibles.module';
+import { ArmadorasModule } from './armadoras/armadoras.module';
+import { MarcasModule } from './marcas/marcas.module';
+import { ModelosModule } from './modelos/modelos.module';
+import { VersionesModule } from './versiones/versiones.module';
+import { TiposCarteraModule } from './tipos_cartera/tipos_cartera.module';
+import { CanalesVentaModule } from './canales_venta/canales_venta.module';
+import { UnidadesEmpaqueModule } from './unidades_empaque/unidades_empaque.module';
 
 @Module({
   imports: [
@@ -73,6 +88,21 @@ import { PaisesModule } from './paises/paises.module';
     GenerosCuentasContablesModule,
     GruposGenerosCuentasModule,
     PaisesModule,
+    ColoresInterioresModule,
+    ColoresExterioresModule,
+    SubCategoriasModule,
+    ColoresModule,
+    TiposCajaModule,
+    BancosModule,
+    CarterasModule,
+    CombustiblesModule,
+    ArmadorasModule,
+    MarcasModule,
+    ModelosModule,
+    VersionesModule,
+    TiposCarteraModule,
+    CanalesVentaModule,
+    UnidadesEmpaqueModule,
     ],
   controllers: [AppController],
   providers: [AppService],

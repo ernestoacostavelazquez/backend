@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { CreateCategoriaDto } from './dto/create-categoria.dto';
 import { UpdateCategoriaDto } from './dto/update-categoria.dto';
 import { Categoria } from './entities/categoria.entity';
@@ -16,7 +16,7 @@ export class CategoriasService {
   async create(createCategoriaDto: CreateCategoriaDto): Promise<{ message: string; result: boolean; data: Categoria | null }> {
     // Verificar si la categoría ya existe
     const categoriaExist = await this.categoriasRepository.findOne({
-      where: { nombre: createCategoriaDto.nombre },
+      where: { nombre_categoria: createCategoriaDto.nombre_categoria },
     });
 
     if (categoriaExist) {

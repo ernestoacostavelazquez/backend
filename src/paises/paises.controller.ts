@@ -4,7 +4,7 @@ import { PaisesService } from './paises.service';
 import { CreatePaisDto } from './dto/create-paise.dto';
 import { UpdatePaisDto } from './dto/update-paise.dto';
 import { ApiTags} from '@nestjs/swagger';
-import { FilterPaisDto } from './dto/filter-paise.dto';
+
 
 @ApiTags('Paises')
 @Controller('Paises')

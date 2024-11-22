@@ -17,40 +17,9 @@ export class MaestroParte {
     @Column({ type: 'text', nullable: true })
     descripcion_parte: string;
 
-    @Column({ type: 'decimal', precision: 15, scale: 2 })
-    costo_promedio: number;
-
-    @Column({ type: 'decimal', precision: 15, scale: 2 })
-    costo_planta: number;
-  
-    @Column({ type: 'decimal', precision: 15, scale: 2 })
-    precio_publico: number;
-
-    @Column({ type: 'decimal', precision: 15, scale: 2 })
-    precio_garantia: number;
-
-    @Column({ type: 'decimal', precision: 15, scale: 2 })
-    precio_mayorista: number;
-  
-    @Column({ type: 'decimal', default: 15, scale: 3 })
-    existencia: number;
-  
-    @Column({ type: 'decimal', default: 15, scale: 3 })
-    stock_minimo: number;
-
-    @Column({ type: 'decimal', default: 15, scale: 3 })
-    stock_maximo: number;
-
-    @Column({ type: 'decimal', default: 15, scale: 3 })
-    backorder: number;
-  
     @Column({ type: 'varchar', length: 50, nullable: true })
     numero_parte_fabricante: string;
-  
-    // Cambiar el tipo a 'TIMESTAMP' o 'DATETIME'
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    fecha_alta: Date;
-    
+      
     @Column({ type: 'varchar', length: 50, nullable: true })
     garantia_parte: string;
 

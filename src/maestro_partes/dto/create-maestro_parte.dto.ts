@@ -14,42 +14,7 @@ export class CreateMaestroParteDto {
     @IsOptional()
     descripcion_parte?: string;
 
-    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'precio_unitario is not a valid decimal number' })
-    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
-    costo_promedio: number;
-
-    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
-    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
-    costo_planta: number;
-    
-    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
-    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
-    precio_publico: number;
-
-    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
-    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
-    precio_garantia: number;
-
-    @IsNumber({ maxDecimalPlaces: 2 }, { message: 'El precio unitario no es un número decimal válido' })
-    @Min(0.01, { message: 'El precio unitario debe ser al menos 0,01' })
-    precio_mayorista: number;
-  
-    @IsInt()
-    @IsOptional()
-    existencia?: number;
-  
-    @IsInt()
-    @IsOptional()
-    stock_minimo?: number;
-
-    @IsInt()
-    @IsOptional()
-    stock_maximo?: number;
-  
-    @IsInt()
-    @IsOptional()
-    backorder?: number;
-
+   
     @IsString()
     @IsOptional()
     numero_parte_fabricante?: string;

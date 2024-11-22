@@ -1,3 +1,4 @@
+// lineas.service.ts
 import { Injectable } from '@nestjs/common';
 import { CreateLineaDto } from './dto/create-linea.dto';
 import { UpdateLineaDto } from './dto/update-linea.dto';
@@ -106,7 +107,7 @@ export class LineasService {
     }
 
     return{
-      message:`Almacen con ID ${id_linea} eliminado con éxito`,
+      message:`Linea con ID ${id_linea} eliminado con éxito`,
       result: true
     }
     
