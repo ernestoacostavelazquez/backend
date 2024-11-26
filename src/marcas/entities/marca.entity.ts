@@ -1,6 +1,6 @@
 // marca.entity.ts
 import { Armadora } from 'src/armadoras/entities/armadora.entity';
-import { Modelo } from 'src/modelos/entities/modelo.entity';
+import { Familia } from 'src/familias/entities/familia.entity';
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -47,9 +47,9 @@ import {
     @JoinColumn({ name: 'id_armadora' })  // Clave foránea
     armadora: Armadora;
   
-    // Relación OneToMany con Modelos
-    @OneToMany(() => Modelo, modelo => modelo.marca)
-    modelo: Modelo[];
+    // Relación OneToMany con Familias
+    @OneToMany(() => Familia, familia => familia.marca)
+    familia: Familia[];
      
   }
   

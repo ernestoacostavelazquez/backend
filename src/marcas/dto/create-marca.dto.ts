@@ -1,5 +1,5 @@
 //create-marca.dto.ts
-import { IsString, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateMarcaDto {
@@ -29,5 +29,9 @@ export class CreateMarcaDto {
 
     @IsBoolean()
     estatus: boolean;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_armadora:number;
   
 }

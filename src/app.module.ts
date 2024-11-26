@@ -46,6 +46,7 @@ import { VersionesModule } from './versiones/versiones.module';
 import { TiposCarteraModule } from './tipos_cartera/tipos_cartera.module';
 import { CanalesVentaModule } from './canales_venta/canales_venta.module';
 import { UnidadesEmpaqueModule } from './unidades_empaque/unidades_empaque.module';
+import { FamiliasModule } from './familias/familias.module';
 
 @Module({
   imports: [
@@ -103,6 +104,7 @@ import { UnidadesEmpaqueModule } from './unidades_empaque/unidades_empaque.modul
     TiposCarteraModule,
     CanalesVentaModule,
     UnidadesEmpaqueModule,
+    FamiliasModule,
     ],
   controllers: [AppController],
   providers: [AppService],
