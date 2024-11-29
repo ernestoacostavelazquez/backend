@@ -29,12 +29,10 @@ import {Entity,PrimaryGeneratedColumn,Column,CreateDateColumn,UpdateDateColumn,D
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación OneToMany con Colores Exteriores
-    @OneToMany(() => ColoresExteriore, coloresExteriore => coloresExteriore.colore)
-    coloresExteriore: ColoresExteriore[];
+    @OneToMany(() => ColoresExteriore, (coloresExteriore) => coloresExteriore.colore)
+    colores_exteriores: ColoresExteriore[];
 
-    // Relación OneToMany con Colores Interiores
-    @OneToMany(() => ColoresInteriore, coloresInteriore => coloresInteriore.colore)
-    coloresInteriore: ColoresInteriore[];
+    @OneToMany(() => ColoresInteriore, (coloresInteriore) => coloresInteriore.colore)
+    colores_interiores: ColoresInteriore[];
   }
   

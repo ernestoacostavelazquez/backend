@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PartesAlmacenService } from './partes_almacen.service';
 import { CreatePartesAlmacenDto } from './dto/create-partes_almacen.dto';
 import { UpdatePartesAlmacenDto } from './dto/update-partes_almacen.dto';
@@ -24,7 +24,7 @@ export class PartesAlmacenController {
     return this.partesAlmacenService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updatePartesAlmacenDto: UpdatePartesAlmacenDto) {
     return this.partesAlmacenService.update(+id, updatePartesAlmacenDto);
   }

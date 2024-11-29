@@ -1,3 +1,4 @@
+//grupos_generos_cuentas.service.ts
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGruposGenerosCuentaDto } from './dto/create-grupos_generos_cuenta.dto';
 import { UpdateGruposGenerosCuentaDto } from './dto/update-grupos_generos_cuenta.dto';

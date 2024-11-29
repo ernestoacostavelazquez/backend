@@ -1,10 +1,10 @@
-// armadoras.service.ts
+//armadoras.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Armadora } from './entities/armadora.entity';
 import { CreateArmadoraDto } from './dto/create-armadora.dto';
 import { UpdateArmadoraDto } from './dto/update-armadora.dto';
+import { Armadora } from './entities/armadora.entity';
 
 @Injectable()
 export class ArmadorasService {
@@ -13,11 +13,6 @@ export class ArmadorasService {
     private readonly armadorasRepository: Repository<Armadora>,
   ) {}
 
-  /**
-   * Crear una nueva armadora
-   * @param createArmadoraDto
-   * @returns
-   */
   async create(createArmadoraDto: CreateArmadoraDto): Promise<{ message: string; result: boolean; data: Armadora | null }> {
     const existingArmadora = await this.armadorasRepository.findOne({
       where: { nombre_armadora: createArmadoraDto.nombre_armadora },
@@ -41,23 +36,8 @@ export class ArmadorasService {
     };
   }
 
-  /**
-   * Obtener todas las armadoras
-   * @returns
-   */
   async findAll(): Promise<{ message: string; result: boolean; data: Armadora[] }> {
-    const armadoras = await this.armadorasRepository.find({
-      order: { nombre_armadora: 'ASC' },
-    });
-
-    if (armadoras.length === 0) {
-      return {
-        message: 'No se encontraron armadoras',
-        result: false,
-        data: [],
-      };
-    }
-
+    const armadoras = await this.armadorasRepository.find({ relations: ['marcas'] });
     return {
       message: 'Listado de armadoras recuperado con éxito',
       result: true,
@@ -65,17 +45,15 @@ export class ArmadorasService {
     };
   }
 
-  /**
-   * Obtener una armadora por ID
-   * @param id
-   * @returns
-   */
   async findOne(id: number): Promise<{ message: string; result: boolean; data: Armadora | null }> {
-    const armadora = await this.armadorasRepository.findOne({ where: { id_armadora: id } });
+    const armadora = await this.armadorasRepository.findOne({ 
+      where: { id_armadora: id },
+      relations: ['marcas'],
+     });
 
     if (!armadora) {
       return {
-        message: 'La armadora no existe',
+        message: `Armadora con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
@@ -88,12 +66,6 @@ export class ArmadorasService {
     };
   }
 
-  /**
-   * Actualizar una armadora por ID
-   * @param id
-   * @param updateArmadoraDto
-   * @returns
-   */
   async update(id: number, updateArmadoraDto: UpdateArmadoraDto): Promise<{ message: string; result: boolean; data: Armadora | null }> {
     const armadora = await this.armadorasRepository.preload({
       id_armadora: id,
@@ -102,7 +74,7 @@ export class ArmadorasService {
 
     if (!armadora) {
       return {
-        message: 'La armadora no existe',
+        message: `Armadora con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
@@ -117,17 +89,12 @@ export class ArmadorasService {
     };
   }
 
-  /**
-   * Eliminar una armadora (soft delete)
-   * @param id
-   * @returns
-   */
   async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.armadorasRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'La armadora no existe',
+        message: `Armadora con ID ${id} no encontrada`,
         result: false,
       };
     }

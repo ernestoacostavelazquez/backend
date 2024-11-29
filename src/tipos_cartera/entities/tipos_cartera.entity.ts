@@ -36,8 +36,8 @@ import {
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación OneToMany con Carteras
-    @OneToMany(() => Cartera, cartera => cartera.tiposCartera)
-    cartera: Cartera[];
+    @OneToMany(() => Cartera, (cartera) => cartera.tipo_cartera)
+    carteras: Cartera[];
+    
   }
   

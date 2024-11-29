@@ -1,3 +1,4 @@
+// create-categoria.dto.ts
 import { IsNotEmpty, IsString, IsOptional, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 

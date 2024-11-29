@@ -8,9 +8,9 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
+    OneToMany,
     ManyToOne,
     JoinColumn,
-    OneToMany,
   } from 'typeorm';
   
   @Entity('familias')
@@ -42,15 +42,12 @@ import {
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación ManyToOne con Familia
-    @ManyToOne(() => Marca, marca => marca.familia)
-    @JoinColumn({ name: 'id_marca' })  // Clave foránea
+    @ManyToOne(() => Marca, (marca) => marca.familias, { nullable: false })
+    @JoinColumn({ name: 'id_marca' })
     marca: Marca;
-     
-    // Relación OneToMany con Modelos
-    @OneToMany(() => Modelo, modelo => modelo.familia)
-    modelo: Modelo[];
 
-
+    @OneToMany(() => Modelo, (modelo) => modelo.familia)
+    modelos: Modelo[];
+  
   }
   

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { MaestroPartesService } from './maestro_partes.service';
 import { CreateMaestroParteDto } from './dto/create-maestro_parte.dto';
 import { UpdateMaestroParteDto } from './dto/update-maestro_parte.dto';
@@ -24,7 +24,7 @@ export class MaestroPartesController {
     return this.maestroPartesService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateMaestroParteDto: UpdateMaestroParteDto) {
     return this.maestroPartesService.update(+id, updateMaestroParteDto);
   }

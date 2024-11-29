@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+//generos_cuentas_contables.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateGenerosCuentasContableDto } from './dto/create-generos_cuentas_contable.dto';
 import { UpdateGenerosCuentasContableDto } from './dto/update-generos_cuentas_contable.dto';
 import { InjectRepository } from '@nestjs/typeorm';

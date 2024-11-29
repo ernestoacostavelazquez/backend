@@ -39,14 +39,14 @@ import { TiposCajaModule } from './tipos_caja/tipos_caja.module';
 import { BancosModule } from './bancos/bancos.module';
 import { CarterasModule } from './carteras/carteras.module';
 import { CombustiblesModule } from './combustibles/combustibles.module';
-import { ArmadorasModule } from './armadoras/armadoras.module';
-import { MarcasModule } from './marcas/marcas.module';
-import { ModelosModule } from './modelos/modelos.module';
-import { VersionesModule } from './versiones/versiones.module';
 import { TiposCarteraModule } from './tipos_cartera/tipos_cartera.module';
 import { CanalesVentaModule } from './canales_venta/canales_venta.module';
 import { UnidadesEmpaqueModule } from './unidades_empaque/unidades_empaque.module';
+import { ArmadorasModule } from './armadoras/armadoras.module';
+import { MarcasModule } from './marcas/marcas.module';
 import { FamiliasModule } from './familias/familias.module';
+import { ModelosModule } from './modelos/modelos.module';
+import { VersionesModule } from './versiones/versiones.module';
 
 @Module({
   imports: [
@@ -97,14 +97,14 @@ import { FamiliasModule } from './familias/familias.module';
     BancosModule,
     CarterasModule,
     CombustiblesModule,
-    ArmadorasModule,
-    MarcasModule,
-    ModelosModule,
-    VersionesModule,
     TiposCarteraModule,
     CanalesVentaModule,
     UnidadesEmpaqueModule,
+    ArmadorasModule,
+    MarcasModule,
     FamiliasModule,
+    ModelosModule,
+    VersionesModule,
     ],
   controllers: [AppController],
   providers: [AppService],

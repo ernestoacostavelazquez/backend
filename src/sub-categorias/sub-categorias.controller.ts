@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body,  Param, Delete, Put } from '@nestjs/common';
 import { SubCategoriasService } from './sub-categorias.service';
 import { CreateSubCategoriaDto } from './dto/create-sub-categoria.dto';
 import { UpdateSubCategoriaDto } from './dto/update-sub-categoria.dto';
@@ -24,7 +24,7 @@ export class SubCategoriasController {
     return this.subCategoriasService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateSubCategoriaDto: UpdateSubCategoriaDto) {
     return this.subCategoriasService.update(+id, updateSubCategoriaDto);
   }

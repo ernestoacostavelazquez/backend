@@ -40,10 +40,9 @@ import {
     @Column({ type: 'boolean', default: true})
     estatus: boolean;
   
-    // Relación ManyToOne con Armadora
-    @ManyToOne(() => TiposCartera, tiposCartera => tiposCartera.cartera)
-    @JoinColumn({ name: 'id_tipo_cartera' })  // Clave foránea
-    tiposCartera: TiposCartera;
+    @ManyToOne(() => TiposCartera, (tiposCartera) => tiposCartera.carteras, { nullable: false })
+    @JoinColumn({ name: 'id_tipo_cartera' })
+    tipo_cartera: TiposCartera;
     
   }
   

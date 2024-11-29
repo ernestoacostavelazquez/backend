@@ -1,37 +1,34 @@
 // familias.service.ts
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Familia } from './entities/familia.entity';
 import { CreateFamiliaDto } from './dto/create-familia.dto';
 import { UpdateFamiliaDto } from './dto/update-familia.dto';
+import { Familia } from './entities/familia.entity';
+import { Marca } from 'src/marcas/entities/marca.entity';
 
 @Injectable()
 export class FamiliasService {
   constructor(
     @InjectRepository(Familia)
     private readonly familiasRepository: Repository<Familia>,
+
+    @InjectRepository(Marca)
+    private readonly marcasRepository: Repository<Marca>,
   ) {}
 
-  /**
-   * Crear una nueva familia
-   * @param createFamiliaDto
-   * @returns
-   */
   async create(createFamiliaDto: CreateFamiliaDto): Promise<{ message: string; result: boolean; data: Familia | null }> {
-    const existingFamilia = await this.familiasRepository.findOne({
-      where: { nombre_familia: createFamiliaDto.nombre_familia },
-    });
+    const marca = await this.marcasRepository.findOne({ where: { id_marca: createFamiliaDto.id_marca } });
 
-    if (existingFamilia) {
-      throw new BadRequestException({
-        message: 'La familia ya existe',
+    if (!marca) {
+      return {
+        message: 'Marca no encontrada',
         result: false,
         data: null,
-      });
+      };
     }
 
-    const newFamilia = this.familiasRepository.create(createFamiliaDto);
+    const newFamilia = this.familiasRepository.create({ ...createFamiliaDto, marca });
     const savedFamilia = await this.familiasRepository.save(newFamilia);
 
     return {
@@ -41,12 +38,8 @@ export class FamiliasService {
     };
   }
 
-  /**
-   * Obtener todas las familias
-   * @returns
-   */
   async findAll(): Promise<{ message: string; result: boolean; data: Familia[] }> {
-    const familias = await this.familiasRepository.find();
+    const familias = await this.familiasRepository.find({ relations: ['marca'] });
     return {
       message: 'Listado de familias recuperado con éxito',
       result: true,
@@ -54,20 +47,15 @@ export class FamiliasService {
     };
   }
 
-  /**
-   * Obtener una familia por ID
-   * @param id
-   * @returns
-   */
   async findOne(id: number): Promise<{ message: string; result: boolean; data: Familia | null }> {
-    const familia = await this.familiasRepository.findOne({ where: { id_familia: id } });
+    const familia = await this.familiasRepository.findOne({ where: { id_familia: id }, relations: ['marca'] });
 
     if (!familia) {
-      throw new NotFoundException({
-        message: 'La familia no existe',
+      return {
+        message: `Familia con ID ${id} no encontrada`,
         result: false,
         data: null,
-      });
+      };
     }
 
     return {
@@ -77,26 +65,32 @@ export class FamiliasService {
     };
   }
 
-  /**
-   * Actualizar una familia por ID
-   * @param id
-   * @param updateFamiliaDto
-   * @returns
-   */
   async update(id: number, updateFamiliaDto: UpdateFamiliaDto): Promise<{ message: string; result: boolean; data: Familia | null }> {
-    const familia = await this.familiasRepository.preload({
-      id_familia: id,
-      ...updateFamiliaDto,
-    });
+    const familia = await this.familiasRepository.findOne({ where: { id_familia: id } });
 
     if (!familia) {
-      throw new NotFoundException({
-        message: 'La familia no existe',
+      return {
+        message: `Familia con ID ${id} no encontrada`,
         result: false,
         data: null,
-      });
+      };
     }
 
+    if (updateFamiliaDto.id_marca) {
+      const marca = await this.marcasRepository.findOne({ where: { id_marca: updateFamiliaDto.id_marca } });
+
+      if (!marca) {
+        return {
+          message: 'Marca no encontrada',
+          result: false,
+          data: null,
+        };
+      }
+
+      familia.marca = marca;
+    }
+
+    Object.assign(familia, updateFamiliaDto);
     const updatedFamilia = await this.familiasRepository.save(familia);
 
     return {
@@ -106,19 +100,14 @@ export class FamiliasService {
     };
   }
 
-  /**
-   * Eliminar una familia (soft delete)
-   * @param id
-   * @returns
-   */
   async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.familiasRepository.softDelete(id);
 
     if (result.affected === 0) {
-      throw new NotFoundException({
-        message: 'La familia no existe',
+      return {
+        message: `Familia con ID ${id} no encontrada`,
         result: false,
-      });
+      };
     }
 
     return {

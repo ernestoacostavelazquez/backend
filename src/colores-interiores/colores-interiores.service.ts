@@ -5,52 +5,75 @@ import { Repository } from 'typeorm';
 import { ColoresInteriore } from './entities/colores-interiore.entity';
 import { CreateColoresInterioreDto } from './dto/create-colores-interiore.dto';
 import { UpdateColoresInterioreDto } from './dto/update-colores-interiore.dto';
+import { Colore } from 'src/colores/entities/colore.entity';
 
 @Injectable()
 export class ColoresInterioresService {
   constructor(
     @InjectRepository(ColoresInteriore)
     private readonly coloresInterioresRepository: Repository<ColoresInteriore>,
+
+    @InjectRepository(Colore)
+    private readonly coloresRepository: Repository<Colore>,
   ) {}
 
-  async create(createColoresInterioreDto: CreateColoresInterioreDto) {
-    const existingColor = await this.coloresInterioresRepository.findOne({
-      where: { nombre_color_interior: createColoresInterioreDto.nombre_color_interior },
-    });
+  /**
+   * Crear un nuevo color interior
+   */
+  async create(createColoresInterioreDto: CreateColoresInterioreDto): Promise<{ message: string; result: boolean; data: ColoresInteriore | null }> {
+    const { id_color, ...rest } = createColoresInterioreDto;
 
-    if (existingColor) {
+    // Verificar si el color existe
+    const colore = await this.coloresRepository.findOne({ where: { id_color } });
+
+    if (!colore) {
       return {
-        message: 'El color interior ya existe',
+        message: 'Color no encontrado',
         result: false,
         data: null,
       };
     }
 
-    const newColor = this.coloresInterioresRepository.create(createColoresInterioreDto);
-    const savedColor = await this.coloresInterioresRepository.save(newColor);
+    // Crear y guardar el nuevo color interior
+    const newColorInterior = this.coloresInterioresRepository.create({
+      ...rest,
+      colore,
+    });
+
+    const savedColorInterior = await this.coloresInterioresRepository.save(newColorInterior);
 
     return {
       message: 'Color interior creado con éxito',
       result: true,
-      data: savedColor,
+      data: savedColorInterior,
     };
   }
 
-  async findAll() {
-    const colores = await this.coloresInterioresRepository.find();
+  /**
+   * Obtener todos los colores interiores
+   */
+  async findAll(): Promise<{ message: string; result: boolean; data: ColoresInteriore[] }> {
+    const coloresInteriores = await this.coloresInterioresRepository.find({ relations: ['colore'] });
+
     return {
       message: 'Listado de colores interiores recuperado con éxito',
       result: true,
-      data: colores,
+      data: coloresInteriores,
     };
   }
 
-  async findOne(id: number) {
-    const color = await this.coloresInterioresRepository.findOne({ where: { id_color_interior: id } });
+  /**
+   * Obtener un color interior por ID
+   */
+  async findOne(id: number): Promise<{ message: string; result: boolean; data: ColoresInteriore | null }> {
+    const colorInterior = await this.coloresInterioresRepository.findOne({
+      where: { id_color_interior: id },
+      relations: ['colore'],
+    });
 
-    if (!color) {
+    if (!colorInterior) {
       return {
-        message: 'El color interior no existe',
+        message: `Color interior con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
@@ -59,39 +82,62 @@ export class ColoresInterioresService {
     return {
       message: `Color interior con ID ${id} recuperado con éxito`,
       result: true,
-      data: color,
+      data: colorInterior,
     };
   }
 
-  async update(id: number, updateColoresInterioreDto: UpdateColoresInterioreDto) {
-    const color = await this.coloresInterioresRepository.preload({
-      id_color_interior: id,
-      ...updateColoresInterioreDto,
+  /**
+   * Actualizar un color interior
+   */
+  async update(id: number, updateColoresInterioreDto: UpdateColoresInterioreDto): Promise<{ message: string; result: boolean; data: ColoresInteriore | null }> {
+    const { id_color, ...rest } = updateColoresInterioreDto;
+
+    const colorInterior = await this.coloresInterioresRepository.findOne({
+      where: { id_color_interior: id },
     });
 
-    if (!color) {
+    if (!colorInterior) {
       return {
-        message: 'El color interior no existe',
+        message: `Color interior con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
     }
 
-    const updatedColor = await this.coloresInterioresRepository.save(color);
+    if (id_color) {
+      const colore = await this.coloresRepository.findOne({ where: { id_color } });
+
+      if (!colore) {
+        return {
+          message: 'Color no encontrado',
+          result: false,
+          data: null,
+        };
+      }
+
+      colorInterior.colore = colore;
+    }
+
+    Object.assign(colorInterior, rest);
+
+    const updatedColorInterior = await this.coloresInterioresRepository.save(colorInterior);
 
     return {
       message: `Color interior con ID ${id} actualizado con éxito`,
       result: true,
-      data: updatedColor,
+      data: updatedColorInterior,
     };
   }
 
-  async remove(id: number) {
+  /**
+   * Eliminar un color interior (soft delete)
+   */
+  async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.coloresInterioresRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'El color interior no existe',
+        message: `Color interior con ID ${id} no encontrado`,
         result: false,
       };
     }

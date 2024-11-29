@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { MaestroPersonasService } from './maestro_personas.service';
 import { CreateMaestroPersonaDto } from './dto/create-maestro_persona.dto';
 import { UpdateMaestroPersonaDto } from './dto/update-maestro_persona.dto';
@@ -24,7 +24,7 @@ export class MaestroPersonasController {
     return this.maestroPersonasService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateMaestroPersonaDto: UpdateMaestroPersonaDto) {
     return this.maestroPersonasService.update(+id, updateMaestroPersonaDto);
   }

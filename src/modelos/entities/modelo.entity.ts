@@ -1,6 +1,5 @@
 // modelo.entity.ts
 import { Familia } from 'src/familias/entities/familia.entity';
-import { Marca } from 'src/marcas/entities/marca.entity';
 import { Versione } from 'src/versiones/entities/versione.entity';
 import {
     Entity,
@@ -24,33 +23,32 @@ import {
   
     @Column({ type: 'text', nullable: true })
     descripcion_modelo: string;
-
+  
     @CreateDateColumn()
     created_at: Date;
-
+  
     @UpdateDateColumn()
     updated_at: Date;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     created_by: string;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     updated_by: string;
-
+  
     @DeleteDateColumn()
     deletedAt: Date;
-
+  
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación ManyToOne con Familia
-    @ManyToOne(() => Familia, familia => familia.modelo)
-    @JoinColumn({ name: 'id_familia' })  // Clave foránea
-    familia: Marca;
-  
-     // Relación OneToMany con Versiones
-     @OneToMany(() => Versione, versione => versione.modelo)
-     versione: Versione[];
-    
+    @ManyToOne(() => Familia, (familia) => familia.modelos, { nullable: false })
+    @JoinColumn({ name: 'id_familia' })
+    familia: Familia;
+
+     // Relación uno a muchos con Versione (modelo tiene muchas versiones)
+    @OneToMany(() => Versione, (versione) => versione.modelo)
+    versiones: Versione[];
+
   }
   

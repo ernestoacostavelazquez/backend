@@ -1,5 +1,5 @@
 // create-sub-categoria.dto.ts
-import { IsString, IsOptional, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateSubCategoriaDto {
@@ -25,4 +25,8 @@ export class CreateSubCategoriaDto {
 
   @IsBoolean()
   estatus: boolean;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_categoria: number;
 }

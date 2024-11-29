@@ -1,3 +1,4 @@
+// categoria.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, DeleteDateColumn } from 'typeorm';
 import { MaestroParte } from 'src/maestro_partes/entities/maestro_parte.entity';
 import { SubCategoria } from 'src/sub-categorias/entities/sub-categoria.entity';
@@ -33,9 +34,9 @@ export class Categoria {
 
   @OneToMany(() => MaestroParte, parte => parte.categoria)
   maestro_partes: MaestroParte[];
-  
-  // Relación OneToMany con SubCategorias
-  @OneToMany(() => SubCategoria, subCategoria => subCategoria.categoria)
-  subCategoria: SubCategoria[];
 
+  @OneToMany(() => SubCategoria, (subCategoria) => subCategoria.categoria)
+  sub_categorias: SubCategoria[];
+  
+  
 }

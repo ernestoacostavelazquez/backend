@@ -5,33 +5,39 @@ import { Repository } from 'typeorm';
 import { Cartera } from './entities/cartera.entity';
 import { CreateCarteraDto } from './dto/create-cartera.dto';
 import { UpdateCarteraDto } from './dto/update-cartera.dto';
+import { TiposCartera } from 'src/tipos_cartera/entities/tipos_cartera.entity';
 
 @Injectable()
 export class CarterasService {
   constructor(
     @InjectRepository(Cartera)
     private readonly carterasRepository: Repository<Cartera>,
+
+    @InjectRepository(TiposCartera)
+    private readonly tiposCarteraRepository: Repository<TiposCartera>,
   ) {}
 
   /**
    * Crear una nueva cartera
-   * @param createCarteraDto
-   * @returns
    */
   async create(createCarteraDto: CreateCarteraDto): Promise<{ message: string; result: boolean; data: Cartera | null }> {
-    const existingCartera = await this.carterasRepository.findOne({
-      where: { nombre_cartera: createCarteraDto.nombre_cartera },
-    });
+    const { id_tipo_cartera, ...rest } = createCarteraDto;
 
-    if (existingCartera) {
+    const tipoCartera = await this.tiposCarteraRepository.findOne({ where: { id_tipo_cartera } });
+
+    if (!tipoCartera) {
       return {
-        message: 'La cartera ya existe',
+        message: 'Tipo de cartera no encontrado',
         result: false,
         data: null,
       };
     }
 
-    const newCartera = this.carterasRepository.create(createCarteraDto);
+    const newCartera = this.carterasRepository.create({
+      ...rest,
+      tipo_cartera: tipoCartera,
+    });
+
     const savedCartera = await this.carterasRepository.save(newCartera);
 
     return {
@@ -43,20 +49,9 @@ export class CarterasService {
 
   /**
    * Obtener todas las carteras
-   * @returns
    */
   async findAll(): Promise<{ message: string; result: boolean; data: Cartera[] }> {
-    const carteras = await this.carterasRepository.find({
-      order: { nombre_cartera: 'ASC' },
-    });
-
-    if (carteras.length === 0) {
-      return {
-        message: 'No se encontraron carteras',
-        result: false,
-        data: [],
-      };
-    }
+    const carteras = await this.carterasRepository.find({ relations: ['tipo_cartera'] });
 
     return {
       message: 'Listado de carteras recuperado con éxito',
@@ -67,15 +62,16 @@ export class CarterasService {
 
   /**
    * Obtener una cartera por ID
-   * @param id
-   * @returns
    */
   async findOne(id: number): Promise<{ message: string; result: boolean; data: Cartera | null }> {
-    const cartera = await this.carterasRepository.findOne({ where: { id_cartera: id } });
+    const cartera = await this.carterasRepository.findOne({
+      where: { id_cartera: id },
+      relations: ['tipo_cartera'],
+    });
 
     if (!cartera) {
       return {
-        message: 'La cartera no existe',
+        message: `Cartera con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
@@ -89,24 +85,36 @@ export class CarterasService {
   }
 
   /**
-   * Actualizar una cartera por ID
-   * @param id
-   * @param updateCarteraDto
-   * @returns
+   * Actualizar una cartera
    */
   async update(id: number, updateCarteraDto: UpdateCarteraDto): Promise<{ message: string; result: boolean; data: Cartera | null }> {
-    const cartera = await this.carterasRepository.preload({
-      id_cartera: id,
-      ...updateCarteraDto,
-    });
+    const { id_tipo_cartera, ...rest } = updateCarteraDto;
+
+    const cartera = await this.carterasRepository.findOne({ where: { id_cartera: id } });
 
     if (!cartera) {
       return {
-        message: 'La cartera no existe',
+        message: `Cartera con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
     }
+
+    if (id_tipo_cartera) {
+      const tipoCartera = await this.tiposCarteraRepository.findOne({ where: { id_tipo_cartera } });
+
+      if (!tipoCartera) {
+        return {
+          message: 'Tipo de cartera no encontrado',
+          result: false,
+          data: null,
+        };
+      }
+
+      cartera.tipo_cartera = tipoCartera;
+    }
+
+    Object.assign(cartera, rest);
 
     const updatedCartera = await this.carterasRepository.save(cartera);
 
@@ -118,16 +126,14 @@ export class CarterasService {
   }
 
   /**
-   * Eliminar una cartera (soft delete)
-   * @param id
-   * @returns
+   * Eliminar una cartera
    */
   async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.carterasRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'La cartera no existe',
+        message: `Cartera con ID ${id} no encontrada`,
         result: false,
       };
     }
@@ -137,4 +143,5 @@ export class CarterasService {
       result: true,
     };
   }
+
 }

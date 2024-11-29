@@ -1,37 +1,34 @@
-// modelos.service.ts
+// modelo.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Modelo } from './entities/modelo.entity';
 import { CreateModeloDto } from './dto/create-modelo.dto';
 import { UpdateModeloDto } from './dto/update-modelo.dto';
+import { Modelo } from './entities/modelo.entity';
+import { Familia } from 'src/familias/entities/familia.entity';
 
 @Injectable()
 export class ModelosService {
   constructor(
     @InjectRepository(Modelo)
     private readonly modelosRepository: Repository<Modelo>,
+
+    @InjectRepository(Familia)
+    private readonly familiasRepository: Repository<Familia>,
   ) {}
 
-  /**
-   * Crear un nuevo modelo
-   * @param createModeloDto
-   * @returns
-   */
   async create(createModeloDto: CreateModeloDto): Promise<{ message: string; result: boolean; data: Modelo | null }> {
-    const existingModelo = await this.modelosRepository.findOne({
-      where: { nombre_modelo: createModeloDto.nombre_modelo },
-    });
+    const familia = await this.familiasRepository.findOne({ where: { id_familia: createModeloDto.id_familia } });
 
-    if (existingModelo) {
+    if (!familia) {
       return {
-        message: 'El modelo ya existe',
+        message: 'Familia no encontrada',
         result: false,
         data: null,
       };
     }
 
-    const newModelo = this.modelosRepository.create(createModeloDto);
+    const newModelo = this.modelosRepository.create({ ...createModeloDto, familia });
     const savedModelo = await this.modelosRepository.save(newModelo);
 
     return {
@@ -41,23 +38,8 @@ export class ModelosService {
     };
   }
 
-  /**
-   * Obtener todos los modelos
-   * @returns
-   */
   async findAll(): Promise<{ message: string; result: boolean; data: Modelo[] }> {
-    const modelos = await this.modelosRepository.find({
-      order: { nombre_modelo: 'ASC' },
-    });
-
-    if (modelos.length === 0) {
-      return {
-        message: 'No se encontraron modelos',
-        result: false,
-        data: [],
-      };
-    }
-
+    const modelos = await this.modelosRepository.find({ relations: ['familia'] });
     return {
       message: 'Listado de modelos recuperado con éxito',
       result: true,
@@ -65,17 +47,12 @@ export class ModelosService {
     };
   }
 
-  /**
-   * Obtener un modelo por ID
-   * @param id
-   * @returns
-   */
   async findOne(id: number): Promise<{ message: string; result: boolean; data: Modelo | null }> {
-    const modelo = await this.modelosRepository.findOne({ where: { id_modelo: id } });
+    const modelo = await this.modelosRepository.findOne({ where: { id_modelo: id }, relations: ['familia'] });
 
     if (!modelo) {
       return {
-        message: 'El modelo no existe',
+        message: `Modelo con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
@@ -88,26 +65,32 @@ export class ModelosService {
     };
   }
 
-  /**
-   * Actualizar un modelo por ID
-   * @param id
-   * @param updateModeloDto
-   * @returns
-   */
   async update(id: number, updateModeloDto: UpdateModeloDto): Promise<{ message: string; result: boolean; data: Modelo | null }> {
-    const modelo = await this.modelosRepository.preload({
-      id_modelo: id,
-      ...updateModeloDto,
-    });
+    const modelo = await this.modelosRepository.findOne({ where: { id_modelo: id } });
 
     if (!modelo) {
       return {
-        message: 'El modelo no existe',
+        message: `Modelo con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
     }
 
+    if (updateModeloDto.id_familia) {
+      const familia = await this.familiasRepository.findOne({ where: { id_familia: updateModeloDto.id_familia } });
+
+      if (!familia) {
+        return {
+          message: 'Familia no encontrada',
+          result: false,
+          data: null,
+        };
+      }
+
+      modelo.familia = familia;
+    }
+
+    Object.assign(modelo, updateModeloDto);
     const updatedModelo = await this.modelosRepository.save(modelo);
 
     return {
@@ -117,17 +100,12 @@ export class ModelosService {
     };
   }
 
-  /**
-   * Eliminar un modelo (soft delete)
-   * @param id
-   * @returns
-   */
   async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.modelosRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'El modelo no existe',
+        message: `Modelo con ID ${id} no encontrado`,
         result: false,
       };
     }

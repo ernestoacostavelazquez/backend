@@ -29,5 +29,9 @@ export class CreateCarteraDto {
     
     @IsBoolean()
     estatus: boolean;
+
+    @IsNumber()
+    @IsOptional()
+    id_tipo_cartera?: number; // Se agrega esta propiedad
   
 }

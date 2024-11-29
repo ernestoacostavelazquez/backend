@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { CarterasService } from './carteras.service';
 import { CreateCarteraDto } from './dto/create-cartera.dto';
 import { UpdateCarteraDto } from './dto/update-cartera.dto';
@@ -24,7 +24,7 @@ export class CarterasController {
     return this.carterasService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateCarteraDto: UpdateCarteraDto) {
     return this.carterasService.update(+id, updateCarteraDto);
   }

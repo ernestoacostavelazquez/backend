@@ -24,26 +24,24 @@ import {
   
     @CreateDateColumn()
     created_at: Date;
-
+  
     @UpdateDateColumn()
     updated_at: Date;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     created_by: string;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     updated_by: string;
-
+  
     @DeleteDateColumn()
     deletedAt: Date;
-
+  
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación ManyToOne con Modelo
-    @ManyToOne(() => Modelo, modelo => modelo.versione)
-    @JoinColumn({ name: 'id_modelo' })  // Clave foránea
+    @ManyToOne(() => Modelo, (modelo) => modelo.versiones, { nullable: false })
+    @JoinColumn({ name: 'id_modelo' })
     modelo: Modelo;
-   
   }
   

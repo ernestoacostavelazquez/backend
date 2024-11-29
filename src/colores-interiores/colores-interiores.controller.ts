@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { ColoresInterioresService } from './colores-interiores.service';
 import { CreateColoresInterioreDto } from './dto/create-colores-interiore.dto';
 import { UpdateColoresInterioreDto } from './dto/update-colores-interiore.dto';
@@ -24,7 +24,7 @@ export class ColoresInterioresController {
     return this.coloresInterioresService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateColoresInterioreDto: UpdateColoresInterioreDto) {
     return this.coloresInterioresService.update(+id, updateColoresInterioreDto);
   }

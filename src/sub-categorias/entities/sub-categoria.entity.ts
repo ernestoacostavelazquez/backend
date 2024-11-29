@@ -37,9 +37,9 @@ import {
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-    // Relación ManyToOne con Categoria
-    @ManyToOne(() => Categoria, categoria => categoria.subCategoria)
-    @JoinColumn({ name: 'id_categoria' })  // Clave foránea
+    @ManyToOne(() => Categoria, (categoria) => categoria.sub_categorias, { nullable: false })
+    @JoinColumn({ name: 'id_categoria' })
     categoria: Categoria;
+
   }
   

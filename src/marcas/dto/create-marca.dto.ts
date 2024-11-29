@@ -3,35 +3,34 @@ import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber } from 'class-val
 import { Type } from 'class-transformer';
 
 export class CreateMarcaDto {
-    @IsString()
-    @IsNotEmpty()
-    nombre_marca: string;
+  @IsString()
+  @IsNotEmpty()
+  nombre_marca: string;
 
-    @IsString()
-    @IsOptional()
-    descripcion_marca?: string;
+  @IsString()
+  @IsOptional()
+  descripcion_marca?: string;
 
-    @IsOptional()
-    @Type(() => Date)
-    created_at?: Date;
+  @IsOptional()
+  @Type(() => Date)
+  created_at?: Date;
 
-    @IsOptional()
-    @Type(() => Date)
-    updated_at?: Date;
+  @IsOptional()
+  @Type(() => Date)
+  updated_at?: Date;
 
-    @IsOptional()
-    @IsString()
-    created_by?: string;
+  @IsOptional()
+  @IsString()
+  created_by?: string;
 
-    @IsOptional()
-    @IsString()
-    updated_by?: string;
+  @IsOptional()
+  @IsString()
+  updated_by?: string;
 
-    @IsBoolean()
-    estatus: boolean;
+  @IsBoolean()
+  estatus: boolean;
 
-    @IsNumber()
-    @IsNotEmpty()
-    id_armadora:number;
-  
+  @IsNumber()
+  @IsNotEmpty()
+  id_armadora: number;
 }

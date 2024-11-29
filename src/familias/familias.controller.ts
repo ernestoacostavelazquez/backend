@@ -1,11 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body,  Param, Delete, Put } from '@nestjs/common';
 import { FamiliasService } from './familias.service';
 import { CreateFamiliaDto } from './dto/create-familia.dto';
 import { UpdateFamiliaDto } from './dto/update-familia.dto';
 import { ApiTags} from '@nestjs/swagger';
 
 @ApiTags('Familias')
-
 @Controller('Familias')
 export class FamiliasController {
   constructor(private readonly familiasService: FamiliasService) {}

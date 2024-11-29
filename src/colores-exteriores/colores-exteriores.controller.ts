@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { ColoresExterioresService } from './colores-exteriores.service';
 import { CreateColoresExterioreDto } from './dto/create-colores-exteriore.dto';
 import { UpdateColoresExterioreDto } from './dto/update-colores-exteriore.dto';
@@ -24,7 +24,7 @@ export class ColoresExterioresController {
     return this.coloresExterioresService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateColoresExterioreDto: UpdateColoresExterioreDto) {
     return this.coloresExterioresService.update(+id, updateColoresExterioreDto);
   }

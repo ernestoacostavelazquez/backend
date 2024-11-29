@@ -1,5 +1,5 @@
 //create-colores-exteriore.dto.ts
-import { IsString, IsOptional, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateColoresExterioreDto {
@@ -25,4 +25,8 @@ export class CreateColoresExterioreDto {
 
   @IsBoolean()
   estatus: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  id_color: number; // 
 }

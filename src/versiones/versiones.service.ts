@@ -2,62 +2,44 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Versione } from './entities/versione.entity';
 import { CreateVersioneDto } from './dto/create-versione.dto';
 import { UpdateVersioneDto } from './dto/update-versione.dto';
+import { Versione } from './entities/versione.entity';
+import { Modelo } from 'src/modelos/entities/modelo.entity';
 
 @Injectable()
 export class VersionesService {
   constructor(
     @InjectRepository(Versione)
     private readonly versionesRepository: Repository<Versione>,
+
+    @InjectRepository(Modelo)
+    private readonly modelosRepository: Repository<Modelo>,
   ) {}
 
-  /**
-   * Crear una nueva versión
-   * @param createVersioneDto
-   * @returns
-   */
   async create(createVersioneDto: CreateVersioneDto): Promise<{ message: string; result: boolean; data: Versione | null }> {
-    const existingVersion = await this.versionesRepository.findOne({
-      where: { nombre_version: createVersioneDto.nombre_version },
-    });
+    const modelo = await this.modelosRepository.findOne({ where: { id_modelo: createVersioneDto.id_modelo } });
 
-    if (existingVersion) {
+    if (!modelo) {
       return {
-        message: 'La versión ya existe',
+        message: 'Modelo no encontrado',
         result: false,
         data: null,
       };
     }
 
-    const newVersion = this.versionesRepository.create(createVersioneDto);
-    const savedVersion = await this.versionesRepository.save(newVersion);
+    const newVersione = this.versionesRepository.create({ ...createVersioneDto, modelo });
+    const savedVersione = await this.versionesRepository.save(newVersione);
 
     return {
       message: 'Versión creada con éxito',
       result: true,
-      data: savedVersion,
+      data: savedVersione,
     };
   }
 
-  /**
-   * Obtener todas las versiones
-   * @returns
-   */
   async findAll(): Promise<{ message: string; result: boolean; data: Versione[] }> {
-    const versiones = await this.versionesRepository.find({
-      order: { nombre_version: 'ASC' },
-    });
-
-    if (versiones.length === 0) {
-      return {
-        message: 'No se encontraron versiones',
-        result: false,
-        data: [],
-      };
-    }
-
+    const versiones = await this.versionesRepository.find({ relations: ['modelo'] });
     return {
       message: 'Listado de versiones recuperado con éxito',
       result: true,
@@ -65,17 +47,12 @@ export class VersionesService {
     };
   }
 
-  /**
-   * Obtener una versión por ID
-   * @param id
-   * @returns
-   */
   async findOne(id: number): Promise<{ message: string; result: boolean; data: Versione | null }> {
-    const version = await this.versionesRepository.findOne({ where: { id_version: id } });
+    const version = await this.versionesRepository.findOne({ where: { id_version: id }, relations: ['modelo'] });
 
     if (!version) {
       return {
-        message: 'La versión no existe',
+        message: `Versión con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
@@ -88,26 +65,32 @@ export class VersionesService {
     };
   }
 
-  /**
-   * Actualizar una versión por ID
-   * @param id
-   * @param updateVersioneDto
-   * @returns
-   */
   async update(id: number, updateVersioneDto: UpdateVersioneDto): Promise<{ message: string; result: boolean; data: Versione | null }> {
-    const version = await this.versionesRepository.preload({
-      id_version: id,
-      ...updateVersioneDto,
-    });
+    const version = await this.versionesRepository.findOne({ where: { id_version: id } });
 
     if (!version) {
       return {
-        message: 'La versión no existe',
+        message: `Versión con ID ${id} no encontrada`,
         result: false,
         data: null,
       };
     }
 
+    if (updateVersioneDto.id_modelo) {
+      const modelo = await this.modelosRepository.findOne({ where: { id_modelo: updateVersioneDto.id_modelo } });
+
+      if (!modelo) {
+        return {
+          message: 'Modelo no encontrado',
+          result: false,
+          data: null,
+        };
+      }
+
+      version.modelo = modelo;
+    }
+
+    Object.assign(version, updateVersioneDto);
     const updatedVersion = await this.versionesRepository.save(version);
 
     return {
@@ -117,17 +100,12 @@ export class VersionesService {
     };
   }
 
-  /**
-   * Eliminar una versión (soft delete)
-   * @param id
-   * @returns
-   */
   async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.versionesRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'La versión no existe',
+        message: `Versión con ID ${id} no encontrada`,
         result: false,
       };
     }

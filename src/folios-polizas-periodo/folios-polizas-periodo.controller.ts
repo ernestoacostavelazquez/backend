@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { FoliosPolizasPeriodoService } from './folios-polizas-periodo.service';
 import { CreateFoliosPolizasPeriodoDto } from './dto/create-folios-polizas-periodo.dto';
 import { UpdateFoliosPolizasPeriodoDto } from './dto/update-folios-polizas-periodo.dto';
@@ -24,7 +24,7 @@ export class FoliosPolizasPeriodoController {
     return this.foliosPolizasPeriodoService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateFoliosPolizasPeriodoDto: UpdateFoliosPolizasPeriodoDto) {
     return this.foliosPolizasPeriodoService.update(+id, updateFoliosPolizasPeriodoDto);
   }

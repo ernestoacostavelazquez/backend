@@ -23,33 +23,30 @@ import {
   
     @Column({ type: 'text', nullable: true })
     descripcion_marca: string;
-
+  
     @CreateDateColumn()
     created_at: Date;
-
+  
     @UpdateDateColumn()
     updated_at: Date;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     created_by: string;
-
-    @Column({ nullable: true})
+  
+    @Column({ nullable: true })
     updated_by: string;
-
+  
     @DeleteDateColumn()
     deletedAt: Date;
-
+  
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
 
-       // Relación ManyToOne con Armadora
-    @ManyToOne(() => Armadora, armadora => armadora.marca)
-    @JoinColumn({ name: 'id_armadora' })  // Clave foránea
+    @ManyToOne(() => Armadora, (armadora) => armadora.marcas, { nullable: false })
+    @JoinColumn({ name: 'id_armadora' })
     armadora: Armadora;
-  
-    // Relación OneToMany con Familias
-    @OneToMany(() => Familia, familia => familia.marca)
-    familia: Familia[];
-     
+
+    @OneToMany(() => Familia, (familia) => familia.marca)
+    familias: Familia[];
   }
   

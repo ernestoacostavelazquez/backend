@@ -1,5 +1,5 @@
 // create-colores-interiore.dto.ts
-import { IsString, IsOptional, IsNotEmpty, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateColoresInterioreDto {
@@ -25,4 +25,8 @@ export class CreateColoresInterioreDto {
 
   @IsBoolean()
   estatus: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  id_color?: number; // Campo necesario para la relación
 }

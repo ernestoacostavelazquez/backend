@@ -37,9 +37,10 @@ import {
     @Column({ type: 'boolean', default: true })
     estatus: boolean;
     
-    // Relación ManyToOne con Colores
-    @ManyToOne(() => Colore, colore => colore.coloresInteriore)
-    @JoinColumn({ name: 'id_color' })  // Clave foránea
+    @ManyToOne(() => Colore, (colore) => colore.colores_interiores, { nullable: false })
+    @JoinColumn({ name: 'id_color' })
     colore: Colore;
+   
+
   }
   

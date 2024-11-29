@@ -1,5 +1,6 @@
 // create-familia.dto.ts
-import { IsString, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateFamiliaDto {
   @IsString()
@@ -11,12 +12,25 @@ export class CreateFamiliaDto {
   descripcion_familia?: string;
 
   @IsOptional()
+  @Type(() => Date)
+  created_at?: Date;
+
+  @IsOptional()
+  @Type(() => Date)
+  updated_at?: Date;
+
+  @IsOptional()
+  @IsString()
   created_by?: string;
 
   @IsOptional()
+  @IsString()
   updated_by?: string;
 
   @IsBoolean()
-  @IsOptional()
-  estatus?: boolean;
+  estatus: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  id_marca: number;
 }

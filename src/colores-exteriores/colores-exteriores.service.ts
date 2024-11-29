@@ -5,52 +5,61 @@ import { Repository } from 'typeorm';
 import { ColoresExteriore } from './entities/colores-exteriore.entity';
 import { CreateColoresExterioreDto } from './dto/create-colores-exteriore.dto';
 import { UpdateColoresExterioreDto } from './dto/update-colores-exteriore.dto';
+import { Colore } from 'src/colores/entities/colore.entity';
 
 @Injectable()
 export class ColoresExterioresService {
   constructor(
     @InjectRepository(ColoresExteriore)
     private readonly coloresExterioresRepository: Repository<ColoresExteriore>,
+
+    @InjectRepository(Colore)
+    private readonly coloresRepository: Repository<Colore>,
   ) {}
 
-  async create(createColoresExterioreDto: CreateColoresExterioreDto) {
-    const existingColor = await this.coloresExterioresRepository.findOne({
-      where: { nombre_color_exterior: createColoresExterioreDto.nombre_color_exterior },
-    });
+  async create(createColoresExterioreDto: CreateColoresExterioreDto): Promise<{ message: string; result: boolean; data: ColoresExteriore | null }> {
+    const { id_color, ...rest } = createColoresExterioreDto;
 
-    if (existingColor) {
+    const colore = await this.coloresRepository.findOne({ where: { id_color } });
+
+    if (!colore) {
       return {
-        message: 'El color exterior ya existe',
+        message: 'Color no encontrado',
         result: false,
         data: null,
       };
     }
 
-    const newColor = this.coloresExterioresRepository.create(createColoresExterioreDto);
-    const savedColor = await this.coloresExterioresRepository.save(newColor);
+    const newColorExterior = this.coloresExterioresRepository.create({
+      ...rest,
+      colore,
+    });
+
+    const savedColorExterior = await this.coloresExterioresRepository.save(newColorExterior);
 
     return {
       message: 'Color exterior creado con éxito',
       result: true,
-      data: savedColor,
+      data: savedColorExterior,
     };
   }
 
-  async findAll() {
-    const colores = await this.coloresExterioresRepository.find();
+  async findAll(): Promise<{ message: string; result: boolean; data: ColoresExteriore[] }> {
+    const coloresExteriores = await this.coloresExterioresRepository.find({ relations: ['colore'] });
+
     return {
       message: 'Listado de colores exteriores recuperado con éxito',
       result: true,
-      data: colores,
+      data: coloresExteriores,
     };
   }
 
-  async findOne(id: number) {
-    const color = await this.coloresExterioresRepository.findOne({ where: { id_color_exterior: id } });
+  async findOne(id: number): Promise<{ message: string; result: boolean; data: ColoresExteriore | null }> {
+    const colorExterior = await this.coloresExterioresRepository.findOne({ where: { id_color_exterior: id }, relations: ['colore'] });
 
-    if (!color) {
+    if (!colorExterior) {
       return {
-        message: 'El color exterior no existe',
+        message: `Color exterior con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
@@ -59,39 +68,54 @@ export class ColoresExterioresService {
     return {
       message: `Color exterior con ID ${id} recuperado con éxito`,
       result: true,
-      data: color,
+      data: colorExterior,
     };
   }
 
-  async update(id: number, updateColoresExterioreDto: UpdateColoresExterioreDto) {
-    const color = await this.coloresExterioresRepository.preload({
-      id_color_exterior: id,
-      ...updateColoresExterioreDto,
-    });
+  async update(id: number, updateColoresExterioreDto: UpdateColoresExterioreDto): Promise<{ message: string; result: boolean; data: ColoresExteriore | null }> {
+    const { id_color, ...rest } = updateColoresExterioreDto;
 
-    if (!color) {
+    const colorExterior = await this.coloresExterioresRepository.findOne({ where: { id_color_exterior: id } });
+
+    if (!colorExterior) {
       return {
-        message: 'El color exterior no existe',
+        message: `Color exterior con ID ${id} no encontrado`,
         result: false,
         data: null,
       };
     }
 
-    const updatedColor = await this.coloresExterioresRepository.save(color);
+    if (id_color) {
+      const colore = await this.coloresRepository.findOne({ where: { id_color } });
+
+      if (!colore) {
+        return {
+          message: 'Color no encontrado',
+          result: false,
+          data: null,
+        };
+      }
+
+      colorExterior.colore = colore;
+    }
+
+    Object.assign(colorExterior, rest);
+
+    const updatedColorExterior = await this.coloresExterioresRepository.save(colorExterior);
 
     return {
       message: `Color exterior con ID ${id} actualizado con éxito`,
       result: true,
-      data: updatedColor,
+      data: updatedColorExterior,
     };
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<{ message: string; result: boolean }> {
     const result = await this.coloresExterioresRepository.softDelete(id);
 
     if (result.affected === 0) {
       return {
-        message: 'El color exterior no existe',
+        message: `Color exterior con ID ${id} no encontrado`,
         result: false,
       };
     }

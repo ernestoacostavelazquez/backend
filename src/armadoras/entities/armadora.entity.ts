@@ -1,4 +1,4 @@
-// armadora.entity.ts
+// armadoras.entity.ts
 import { Marca } from 'src/marcas/entities/marca.entity';
 import {
     Entity,
@@ -23,25 +23,23 @@ import {
   
     @CreateDateColumn()
     created_at: Date;
-
+  
     @UpdateDateColumn()
     updated_at: Date;
-
+  
     @Column({ nullable: true })
     created_by: string;
-
+  
     @Column({ nullable: true })
     updated_by: string;
-
+  
     @DeleteDateColumn()
     deletedAt: Date;
-
-    @Column({ type: 'boolean', default: true})
+  
+    @Column({ type: 'boolean', default: true })
     estatus: boolean;
-    
-    // Relación OneToMany con Marcas
-    @OneToMany(() => Marca, marca => marca.armadora)
-    marca: Marca[];
-     
+
+    @OneToMany(() => Marca, (marca) => marca.armadora)
+    marcas: Marca[];
   }
   
