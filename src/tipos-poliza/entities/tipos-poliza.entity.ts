@@ -1,3 +1,4 @@
+// tipos-poliza.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
 import { PolizasContable } from 'src/polizas-contables/entities/polizas-contable.entity';
 import { FoliosPolizasPeriodo } from 'src/folios-polizas-periodo/entities/folios-polizas-periodo.entity';
